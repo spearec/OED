@@ -124,6 +124,8 @@ export enum ActionType {
 	DeleteSubmittedConversion = 'DELETE_SUBMITTED_CONVERSION',
 	DeleteConversion = 'DELETE_CONVERSION',
 	ConfirmConversionsFetchedOnce = 'CONFIRM_CONVERSIONS_FETCHED_ONCE',
+
+	ToggleDarkMode = 'TOGGLE_DARK_MODE',
 }
 
 /**

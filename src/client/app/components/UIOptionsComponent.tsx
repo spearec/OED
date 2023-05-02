@@ -30,6 +30,7 @@ export interface UIOptionsProps {
 	comparePeriod: ComparePeriod;
 	compareSortingOrder: SortingOrder;
 	optionsVisibility: boolean;
+	isDarkMode: boolean;
 	changeDuration(duration: moment.Duration): Promise<any>;
 	changeBarStacking(): ChangeBarStackingAction;
 	setOptionsVisibility(visibility: boolean): SetOptionsVisibility;
@@ -82,6 +83,7 @@ class UIOptionsComponent extends React.Component<UIOptionsPropsWithIntl, UIOptio
 		const zIndexFix: React.CSSProperties = {
 			zIndex: 0
 		};
+		const isDarkMode = this.props.isDarkMode;
 
 		return (
 			<div>
@@ -263,6 +265,7 @@ class UIOptionsComponent extends React.Component<UIOptionsPropsWithIntl, UIOptio
 
 				<div style={divTopPadding} className='d-none d-lg-block'>
 					<Button
+						className={`button ${isDarkMode ? 'dark' : ''}`}
 						onClick={this.handleSetOptionsVisibility}
 						outline
 					>

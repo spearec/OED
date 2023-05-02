@@ -19,6 +19,8 @@ import { UnitData, DisplayableType, UnitRepresentType, UnitType } from '../../ty
 import { TrueFalseType } from '../../types/items';
 import { notifyUser } from '../../utils/input'
 import { formInputStyle, tableStyle, requiredStyle, tooltipBaseStyle } from '../../styles/modalStyle';
+import { State } from '../../types/redux/state';
+import { useSelector } from 'react-redux';
 
 interface EditUnitModalComponentProps {
 	show: boolean;
@@ -29,6 +31,8 @@ interface EditUnitModalComponentProps {
 
 export default function EditUnitModalComponent(props: EditUnitModalComponentProps) {
 	const dispatch = useDispatch();
+
+	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
 
 	// Set existing unit values
 	const values = {
@@ -158,7 +162,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 	return (
 		<>
 			<Modal show={props.show} onHide={props.handleClose}>
-				<Modal.Header>
+				<Modal.Header className={`${isDarkMode ? 'dark' : 'light'}`}>
 					<Modal.Title> <FormattedMessage id="edit.unit" />
 						<TooltipHelpContainer page='units-edit' />
 						<div style={tooltipStyle}>
@@ -167,7 +171,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 					</Modal.Title>
 				</Modal.Header>
 				{/* when any of the unit are changed call one of the functions. */}
-				<Modal.Body className="show-grid">
+				<Modal.Body className={`show-grid ${isDarkMode ? 'dark' : ''}`}>
 					<div id="container">
 						<div id="modalChild">
 							{/* Modal content */}
@@ -283,7 +287,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 						</div>
 					</div>
 				</Modal.Body>
-				<Modal.Footer>
+				<Modal.Footer className={`${isDarkMode ? 'dark' : 'light'}`}>
 					{/* Hides the modal */}
 					<Button variant="secondary" onClick={handleClose}>
 						<FormattedMessage id="discard.changes" />

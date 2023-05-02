@@ -95,6 +95,10 @@ export interface ConfirmGraphRenderOnce {
 	type: ActionType.ConfirmGraphRenderOnce;
 }
 
+export interface ToggleDarkModeAction {
+	type: ActionType.ToggleDarkMode;
+}
+
 export type GraphAction =
 	| ChangeGraphZoomAction
 	| ChangeSliderRangeAction
@@ -110,7 +114,8 @@ export type GraphAction =
 	| ChangeCompareSortingOrderAction
 	| SetOptionsVisibility
 	| UpdateLineGraphRate
-	| ConfirmGraphRenderOnce;
+	| ConfirmGraphRenderOnce
+	| ToggleDarkModeAction;
 
 export interface LineGraphRate {
 	label: string,
@@ -133,4 +138,5 @@ export interface GraphState {
 	optionsVisibility: boolean;
 	lineGraphRate: LineGraphRate;
 	renderOnce: boolean;
+	darkMode: boolean;
 }

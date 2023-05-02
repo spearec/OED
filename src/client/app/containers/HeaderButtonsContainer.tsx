@@ -16,6 +16,7 @@ function mapStateToProps(state: State, ownProps: { showCollapsedMenuButton: bool
 	const currentUser = state.currentUser.profile;
 	let loggedInAsAdmin = false;
 	let role: UserRole | null = null;
+	const isDarkMode = state.graph.darkMode;
 	if (currentUser !== null) {
 		loggedInAsAdmin = isRoleAdmin(currentUser.role);
 		role = currentUser.role;
@@ -24,7 +25,8 @@ function mapStateToProps(state: State, ownProps: { showCollapsedMenuButton: bool
 		loggedInAsAdmin,
 		role,
 		...ownProps,
-		hasUnsavedChanges: state.unsavedWarning.hasUnsavedChanges
+		hasUnsavedChanges: state.unsavedWarning.hasUnsavedChanges,
+		isDarkMode
 	};
 }
 

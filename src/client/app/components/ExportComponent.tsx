@@ -41,6 +41,8 @@ export default function ExportComponent() {
 	// Time range of graphic
 	const timeInterval = graphState.timeInterval;
 
+	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+
 	// Function to export the data in a graph.
 	const exportGraphReading = () => {
 		// What unit is being graphed. Unit of all lines to export.
@@ -275,14 +277,14 @@ export default function ExportComponent() {
 	return (
 		<>
 			<div>
-				<Button outline onClick={exportGraphReading}>
+				<Button outline className={`button ${isDarkMode ? 'dark' : ''}`}onClick={exportGraphReading}>
 					<FormattedMessage id='export.graph.data' />
 				</Button>
 				<TooltipMarkerComponent page='home' helpTextId='help.home.export.graph.data' />
 			</div>
 			{/* Only raw export if a line graph */}
 			{graphState.chartToRender === 'line' ? <div style={{ paddingTop: '10px' }}>
-				<Button outline onClick={exportRawReadings}>
+				<Button outline className={`button ${isDarkMode ? 'dark' : ''}`} onClick={exportRawReadings}>
 					<FormattedMessage id='export.raw.graph.data' />
 				</Button>
 			</div> : ''}

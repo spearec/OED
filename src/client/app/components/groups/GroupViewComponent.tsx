@@ -43,14 +43,16 @@ export default function GroupViewComponent(props: GroupViewComponentProps) {
 	// Check for admin status
 	const loggedInAsAdmin = (currentUser !== null) && isRoleAdmin(currentUser.role);
 
+	const isDarkMode = useSelector((state:State) => state.graph.darkMode);
+
 	// Set up to display the units associated with the group as the unit identifier.
 	// unit state
 	const unitState = useSelector((state: State) => state.units.units);
 
 	return (
-		<div className="card">
+		<div className={`card ${isDarkMode ? 'dark' : ''}`}>
 			{/* Use identifier-container since similar and groups only have name */}
-			<div className="identifier-container">
+			<div className={`identifier-container ${isDarkMode ? 'dark' : ''}`}>
 				{props.group.name}
 			</div>
 			<div className="item-container">

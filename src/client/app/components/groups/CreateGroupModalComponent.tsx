@@ -35,6 +35,8 @@ interface CreateGroupModalComponentProps {
 export default function CreateGroupModalComponent(props: CreateGroupModalComponentProps) {
 	const dispatch = useDispatch();
 
+	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+
 	// Meter state
 	const metersState = useSelector((state: State) => state.meters.byMeterID);
 	// Group state
@@ -250,7 +252,7 @@ export default function CreateGroupModalComponent(props: CreateGroupModalCompone
 			</Button>
 
 			<Modal show={showModal} onHide={handleClose}>
-				<Modal.Header>
+				<Modal.Header className={`${isDarkMode ? 'dark' : 'light'}`}>
 					<Modal.Title> <FormattedMessage id="create.group" />
 						<TooltipHelpContainer page='groups-create' />
 						<div style={tooltipStyle}>
@@ -260,7 +262,7 @@ export default function CreateGroupModalComponent(props: CreateGroupModalCompone
 				</Modal.Header>
 				{/* when any of the group properties are changed call one of the functions. */}
 				{loggedInAsAdmin && // only render when logged in as Admin
-					<Modal.Body className="show-grid">
+					<Modal.Body className={`show-grid ${isDarkMode ? 'dark' : ''}`}>
 						<div id="container">
 							<div id="modalChild">
 								{/* Modal content */}
@@ -416,7 +418,7 @@ export default function CreateGroupModalComponent(props: CreateGroupModalCompone
 							</div>
 						</div>
 					</Modal.Body>}
-				<Modal.Footer>
+				<Modal.Footer className={`${isDarkMode ? 'dark' : 'light'}`}>
 					{/* Hides the modal */}
 					<Button variant="secondary" onClick={handleClose}>
 						<FormattedMessage id="discard.changes" />

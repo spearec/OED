@@ -38,6 +38,8 @@ interface EditMeterModalComponentProps {
 export default function EditMeterModalComponent(props: EditMeterModalComponentProps) {
 	const dispatch = useDispatch();
 
+	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+
 	// Check for admin status
 	const currentUser = useSelector((state: State) => state.currentUser.profile);
 	const loggedInAsAdmin = (currentUser !== null) && isRoleAdmin(currentUser.role);
@@ -326,7 +328,7 @@ export default function EditMeterModalComponent(props: EditMeterModalComponentPr
 	return (
 		<>
 			<Modal show={props.show} onHide={props.handleClose}>
-				<Modal.Header>
+				<Modal.Header className={`${isDarkMode ? 'dark' : 'light'}`}>
 					<Modal.Title> <FormattedMessage id="edit.meter" />
 						<TooltipHelpContainer page='meters-edit' />
 						<div style={tooltipStyle}>
@@ -336,11 +338,11 @@ export default function EditMeterModalComponent(props: EditMeterModalComponentPr
 				</Modal.Header>
 				{/* when any of the meter are changed call one of the functions. */}
 				{loggedInAsAdmin && // only render when logged in as Admin
-					<Modal.Body className="show-grid">
+					<Modal.Body className={`show-grid ${isDarkMode ? 'dark' : ''}`}>
 						<div id="container">
 							<div id="modalChild">
 								{/* Modal content */}
-								<div className="container-fluid">
+								<div className={`container-fluid ${isDarkMode ? 'dark' : ''}`}>
 									<div style={tableStyle}>
 										{/* Identifier input */}
 										<div style={formInputStyle}>
@@ -631,7 +633,7 @@ export default function EditMeterModalComponent(props: EditMeterModalComponentPr
 							</div>
 						</div>
 					</Modal.Body>}
-				<Modal.Footer>
+				<Modal.Footer className={`${isDarkMode ? 'dark' : 'light'}`}>
 					{/* Hides the modal */}
 					<Button variant="secondary" onClick={handleClose}>
 						<FormattedMessage id="discard.changes" />

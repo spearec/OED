@@ -11,6 +11,8 @@ import EditUnitModalComponent from './EditUnitModalComponent';
 import '../../styles/card-page.css';
 import { UnitData } from 'types/redux/units';
 import translate from '../../utils/translate';
+import { State } from 'types/redux/state';
+import { useSelector } from 'react-redux';
 
 interface UnitViewComponentProps {
 	unit: UnitData;
@@ -30,9 +32,11 @@ export default function UnitViewComponent(props: UnitViewComponentProps) {
 		setShowEditModal(false);
 	}
 
+	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+
 	return (
-		<div className="card">
-			<div className="identifier-container">
+		<div className={`card ${isDarkMode ? 'dark' : ''}`}>
+			<div className={`identifier-container ${isDarkMode ? 'dark' : ''}`}>
 				{props.unit.identifier}
 			</div>
 			<div className="item-container">

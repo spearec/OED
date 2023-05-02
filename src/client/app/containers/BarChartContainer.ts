@@ -131,6 +131,11 @@ function mapStateToProps(state: State) {
 
 	// Customize the layout of the plot
 	const layout: any = {
+		plot_bgcolor: (state.graph.darkMode ? '#333333' : 'white'),
+		paper_bgcolor: (state.graph.darkMode ? '#333333' : 'white'),
+		font: {
+			color: (state.graph.darkMode ? 'white' : 'black')
+		},
 		barmode: (state.graph.barStacking ? 'stack' : 'group'),
 		bargap: 0.2, // Gap between different times of readings
 		bargroupgap: 0.1, // Gap between different meter's readings under the same timestamp

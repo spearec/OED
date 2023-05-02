@@ -12,6 +12,8 @@ import '../../styles/card-page.css';
 import { ConversionData } from 'types/redux/conversions';
 import { UnitDataById } from 'types/redux/units';
 import translate from '../../utils/translate';
+import { State } from 'types/redux/state';
+import { useSelector } from 'react-redux';
 
 interface ConversionViewComponentProps {
 	conversion: ConversionData;
@@ -23,6 +25,8 @@ export default function ConversionViewComponent(props: ConversionViewComponentPr
 
 	// Edit Modal Show
 	const [showEditModal, setShowEditModal] = useState(false);
+
+	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
 
 	const handleShow = () => {
 		setShowEditModal(true);
@@ -45,8 +49,8 @@ export default function ConversionViewComponent(props: ConversionViewComponentPr
 	// Unlike the details component, we don't check if units are loaded since must come through that page.
 
 	return (
-		<div className="card">
-			<div className="identifier-container">
+		<div className={`card ${isDarkMode ? 'dark' : ''}`}>
+			<div className={`identifier-container ${isDarkMode ? 'dark' : ''}`}>
 				{header}
 			</div>
 			<div className="item-container">

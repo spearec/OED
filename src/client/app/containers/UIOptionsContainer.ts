@@ -24,7 +24,8 @@ function mapStateToProps(state: State) {
 		barDuration: state.graph.barDuration,
 		comparePeriod: state.graph.comparePeriod,
 		compareSortingOrder: state.graph.compareSortingOrder,
-		optionsVisibility: state.graph.optionsVisibility
+		optionsVisibility: state.graph.optionsVisibility,
+		isDarkMode: state.graph.darkMode
 	};
 }
 

@@ -12,6 +12,7 @@ import TooltipMarkerComponent from './TooltipMarkerComponent';
 interface ChartLinkProps {
 	linkText: string;
 	chartType: ChartTypes;
+	isDarkMode: boolean;
 }
 
 interface ChartLinkState {
@@ -48,9 +49,12 @@ export default class ChartLinkComponent extends React.Component<ChartLinkProps, 
 			border: '1px solid #e3e3e3'
 
 		};
+
+		const isDarkMode = this.props.isDarkMode;
+
 		return (
 			<div>
-				<Button	outline	onClick={this.toggleLink}>
+				<Button	outline	className={`button ${isDarkMode ? 'dark' : ''}`} onClick={this.toggleLink}>
 					<FormattedMessage id='toggle.link' />
 				</Button>
 				<TooltipMarkerComponent page='home' helpTextId='help.home.toggle.chart.link'/>

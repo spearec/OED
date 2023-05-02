@@ -17,7 +17,8 @@ import { LanguageTypes } from '../types/redux/i18n';
 */
 function mapStateToProps(state: State) {
 	return {
-		selectedLanguage: state.admin.defaultLanguage
+		selectedLanguage: state.admin.defaultLanguage,
+		isDarkMode: state.graph.darkMode
 	};
 }
 

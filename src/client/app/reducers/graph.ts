@@ -23,7 +23,8 @@ const defaultState: GraphState = {
 	hotlinked: false,
 	optionsVisibility: true,
 	lineGraphRate: {label: 'hour', rate: 1},
-	renderOnce: false
+	renderOnce: false,
+	darkMode: false
 };
 
 export default function graph(state = defaultState, action: GraphAction) {
@@ -104,6 +105,11 @@ export default function graph(state = defaultState, action: GraphAction) {
 			return {
 				...state,
 				lineGraphRate: action.lineGraphRate
+			};
+		case ActionType.ToggleDarkMode:
+			return {
+				...state,
+				darkMode: !state.darkMode
 			};
 		default:
 			return state;

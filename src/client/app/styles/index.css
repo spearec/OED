@@ -10,3 +10,11 @@ html {
 .js-plotly-plot {
 	width: 100%;
 }
+
+.darkmode select {
+	background-color: white;
+}
+
+.darkmode button {
+	background-color: white;
+}

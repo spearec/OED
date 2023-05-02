@@ -211,6 +211,11 @@ function mapStateToProps(state: State) {
 
 	// Customize the layout of the plot
 	const layout: any = {
+		plot_bgcolor: (state.graph.darkMode ? '#333333' : 'white'),
+		paper_bgcolor: (state.graph.darkMode ? '#333333' : 'white'),
+		font: {
+			color: (state.graph.darkMode ? 'white' : 'black')
+		},
 		autosize: true,
 		showlegend: true,
 		height: 700,

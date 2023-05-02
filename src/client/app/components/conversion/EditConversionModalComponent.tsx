@@ -19,6 +19,8 @@ import { ConversionData } from '../../types/redux/conversions';
 import { UnitDataById } from 'types/redux/units';
 import ConfirmActionModalComponent from '../ConfirmActionModalComponent'
 import { formInputStyle, tableStyle, requiredStyle, tooltipBaseStyle } from '../../styles/modalStyle';
+import { State } from '../../types/redux/state';
+import { useSelector } from 'react-redux';
 
 interface EditConversionModalComponentProps {
 	show: boolean;
@@ -33,6 +35,8 @@ interface EditConversionModalComponentProps {
 
 export default function EditConversionModalComponent(props: EditConversionModalComponentProps) {
 	const dispatch = useDispatch();
+
+	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
 
 	// Set existing conversion values
 	const values = {
@@ -144,7 +148,7 @@ export default function EditConversionModalComponent(props: EditConversionModalC
 				actionConfirmText={deleteConfirmText}
 				actionRejectText={deleteRejectText} />
 			<Modal show={props.show} onHide={props.handleClose}>
-				<Modal.Header>
+				<Modal.Header className={`${isDarkMode ? 'dark' : 'light'}`}>
 					<Modal.Title> <FormattedMessage id="conversion.edit.conversion" />
 						<TooltipHelpContainer page='conversions-edit' />
 						<div style={tooltipStyle}>
@@ -153,7 +157,7 @@ export default function EditConversionModalComponent(props: EditConversionModalC
 					</Modal.Title>
 				</Modal.Header>
 				{/* when any of the conversion are changed call one of the functions. */}
-				<Modal.Body className="show-grid">
+				<Modal.Body className={`show-grid ${isDarkMode ? 'dark' : ''}`}>
 					<div id="container">
 						<div id="modalChild">
 							{/* Modal content */}
@@ -228,7 +232,7 @@ export default function EditConversionModalComponent(props: EditConversionModalC
 						</div>
 					</div>
 				</Modal.Body>
-				<Modal.Footer>
+				<Modal.Footer className={`${isDarkMode ? 'dark' : 'light'}`}>
 					<Button variant="danger" onClick={handleDeleteConfirmationModalOpen}>
 						<FormattedMessage id="conversion.delete.conversion" />
 					</Button>

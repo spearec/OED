@@ -30,6 +30,10 @@ export function changeBarStacking(): t.ChangeBarStackingAction {
 	return { type: ActionType.ChangeBarStacking };
 }
 
+export function ToggleDarkMode(): t.ToggleDarkModeAction {
+	return { type: ActionType.ToggleDarkMode };
+}
+
 export function updateSelectedMeters(meterIDs: number[]): t.UpdateSelectedMetersAction {
 	return { type: ActionType.UpdateSelectedMeters, meterIDs };
 }

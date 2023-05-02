@@ -18,6 +18,8 @@ import { UnitDataById } from 'types/redux/units';
 import { ConversionData } from 'types/redux/conversions';
 import * as _ from 'lodash';
 import {formInputStyle, tableStyle, requiredStyle, tooltipBaseStyle} from '../../styles/modalStyle';
+import { State } from '../../types/redux/state';
+import { useSelector } from 'react-redux';
 
 interface CreateConversionModalComponentProps {
 	conversionsState: ConversionData[];
@@ -27,6 +29,8 @@ interface CreateConversionModalComponentProps {
 export default function CreateConversionModalComponent(props: CreateConversionModalComponentProps) {
 
 	const dispatch = useDispatch();
+
+	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
 
 	const defaultValues = {
 		// Invalid source/destination ids arbitrarily set to -999.
@@ -160,7 +164,7 @@ export default function CreateConversionModalComponent(props: CreateConversionMo
 			</Button>
 
 			<Modal show={showModal} onHide={handleClose}>
-				<Modal.Header>
+				<Modal.Header className={`${isDarkMode ? 'dark' : 'light'}`}>
 					<Modal.Title> <FormattedMessage id="create.conversion" />
 						<TooltipHelpContainer page='conversions-create' />
 						<div style={tooltipStyle}>
@@ -169,7 +173,7 @@ export default function CreateConversionModalComponent(props: CreateConversionMo
 					</Modal.Title>
 				</Modal.Header>
 				{/* when any of the conversion are changed call one of the functions. */}
-				<Modal.Body className="show-grid">
+				<Modal.Body className={`show-grid ${isDarkMode ? 'dark' : ''}`}>
 					<div id="container">
 						<div id="modalChild">
 							{/* Modal content */}
@@ -260,7 +264,7 @@ export default function CreateConversionModalComponent(props: CreateConversionMo
 						</div>
 					</div>
 				</Modal.Body>
-				<Modal.Footer>
+				<Modal.Footer className={`${isDarkMode ? 'dark' : 'light'}`}>
 					{/* Hides the modal */}
 					<Button variant="secondary" onClick={handleClose}>
 						<FormattedMessage id="discard.changes" />

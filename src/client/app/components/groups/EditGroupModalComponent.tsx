@@ -49,6 +49,8 @@ interface EditGroupModalComponentProps {
 export default function EditGroupModalComponent(props: EditGroupModalComponentProps) {
 	const dispatch = useDispatch();
 
+	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+
 	// Meter state
 	const metersState = useSelector((state: State) => state.meters.byMeterID);
 	// unit state
@@ -352,7 +354,7 @@ export default function EditGroupModalComponent(props: EditGroupModalComponentPr
 				actionRejectText={deleteRejectText} />
 			<Modal show={props.show} onHide={props.handleClose}>
 				{/* In a number of the items that follow, what is shown varies on whether you are an admin. */}
-				<Modal.Header>
+				<Modal.Header className={`${isDarkMode ? 'dark' : 'light'}`}>
 					<Modal.Title> <FormattedMessage id={loggedInAsAdmin ? 'edit.group' : 'group.details'} />
 						<TooltipHelpContainer page='groups-edit' />
 						<div style={tooltipStyle}>
@@ -360,7 +362,7 @@ export default function EditGroupModalComponent(props: EditGroupModalComponentPr
 						</div>
 					</Modal.Title>
 				</Modal.Header>
-				<Modal.Body className="show-grid">
+				<Modal.Body className={`show-grid ${isDarkMode ? 'dark' : ''}`}>
 					<div id="container">
 						<div id="modalChild">
 							{/* Modal content */}
@@ -562,7 +564,7 @@ export default function EditGroupModalComponent(props: EditGroupModalComponentPr
 						</div>
 					</div>
 				</Modal.Body>
-				<Modal.Footer>
+				<Modal.Footer className={`${isDarkMode ? 'dark' : 'light'}`}>
 					{/* Delete, discard & save buttons if admin and close button if not. */}
 					{loggedInAsAdmin ?
 						<div>

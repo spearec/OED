@@ -34,32 +34,34 @@ export default function ChartSelectComponent() {
 		{ value: map.id, label: map.name.trim(), isDisabled: !(map.origin && map.opposite) } as SelectOption
 	)), 'label');
 
+	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+
 	return (
 		<div style={divBottomPadding}>
 			<p style={labelStyle}>
 				<FormattedMessage id='graph.type' />:
 			</p>
 			<Dropdown isOpen={expand} toggle={() => setExpand(!expand)}>
-				<DropdownToggle outline caret>
+				<DropdownToggle outline className={`button ${isDarkMode ? 'dark' : ''}`} caret>
 					<FormattedMessage id={useSelector((state: State) => state.graph.chartToRender)} />
 				</DropdownToggle>
-				<DropdownMenu>
-					<DropdownItem
+				<DropdownMenu className={`${isDarkMode ? 'dark' : 'light'}`}>
+					<DropdownItem className={`${isDarkMode ? 'dark' : 'light'}`}
 						onClick={() => dispatch({type: 'CHANGE_CHART_TO_RENDER', chartType: ChartTypes.line})}
 					>
 						<FormattedMessage id='line' />
 					</DropdownItem>
-					<DropdownItem
+					<DropdownItem className={`${isDarkMode ? 'dark' : 'light'}`}
 						onClick={() => dispatch({type: 'CHANGE_CHART_TO_RENDER', chartType: ChartTypes.bar})}
 					>
 						<FormattedMessage id='bar' />
 					</DropdownItem>
-					<DropdownItem
+					<DropdownItem className={`${isDarkMode ? 'dark' : 'light'}`}
 						onClick={() => dispatch({type: 'CHANGE_CHART_TO_RENDER', chartType: ChartTypes.compare})}
 					>
 						<FormattedMessage id='compare' />
 					</DropdownItem>
-					<DropdownItem
+					<DropdownItem className={`${isDarkMode ? 'dark' : 'light'}`}
 						onClick={() => {
 							dispatch({type: 'CHANGE_CHART_TO_RENDER', chartType: ChartTypes.map});
 							if (Object.keys(sortedMaps).length === 1) {

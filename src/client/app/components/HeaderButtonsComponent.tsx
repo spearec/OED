@@ -13,6 +13,7 @@ import TooltipHelpContainer from '../containers/TooltipHelpContainer';
 import { UserRole } from '../types/items';
 import { hasPermissions } from '../utils/hasPermissions';
 import { FlipLogOutStateAction } from '../types/redux/unsavedWarning';
+import DarkModeComponent from './DarkModeComponent';
 
 interface HeaderButtonsProps {
 	isModal: boolean;
@@ -20,6 +21,7 @@ interface HeaderButtonsProps {
 	loggedInAsAdmin: boolean;
 	role: UserRole | null;
 	hasUnsavedChanges: boolean;
+	isDarkMode: boolean;
 	handleLogOut: () => any;
 	flipLogOutState(): FlipLogOutStateAction;
 }
@@ -49,6 +51,7 @@ export default class HeaderButtonsComponent extends React.Component<HeaderButton
 		const shouldUnitsButtonDisabled = getPage() === 'units';
 		const shouldConversionsButtonDisabled = getPage() === 'conversions';
 		const dataFor = this.props.isModal ? 'all-modal' : 'all';
+		const isDarkMode = this.props.isDarkMode;
 
 		const linkStyle: React.CSSProperties = {
 			display: 'inline',
@@ -88,70 +91,71 @@ export default class HeaderButtonsComponent extends React.Component<HeaderButton
 						style={adminViewableLinkStyle}
 						to='/admin'>
 						<Button disabled={shouldAdminButtonDisabled}
-							outline><FormattedMessage id='admin.panel' />
+							outline className={`button ${isDarkMode ? 'dark' : ''}`}><FormattedMessage id='admin.panel' />
 						</Button>
 					</Link>
 					<Link
 						style={adminViewableLinkStyle}
 						to='/conversions'>
 						<Button disabled={shouldConversionsButtonDisabled}
-							outline><FormattedMessage id='conversions' />
+							outline className={`button ${isDarkMode ? 'dark' : ''}`}><FormattedMessage id='conversions' />
 						</Button>
 					</Link>
 					<Link
 						style={csvLinkStyle}
 						to='/csv'>
 						<Button disabled={shouldCSVButtonDisabled}
-							outline><FormattedMessage id='csv' />
+							outline className={`button ${isDarkMode ? 'dark' : ''}`}><FormattedMessage id='csv' />
 						</Button>
 					</Link>
 					<Link
 						style={linkStyle}
 						to='/groups'>
 						<Button disabled={shouldGroupsButtonDisabled}
-							outline><FormattedMessage id='groups' />
+							outline className={`button ${isDarkMode ? 'dark' : ''}`}><FormattedMessage id='groups' />
 						</Button>
 					</Link>
 					<Link
 						style={linkStyle}
 						to='/'>
 						<Button disabled={shouldHomeButtonDisabled}
-							outline><FormattedMessage id='home' />
+							outline className={`button ${isDarkMode ? 'dark' : ''}`}><FormattedMessage id='home' />
 						</Button>
 					</Link>
 					<Link
 						style={adminViewableLinkStyle}
 						to='/maps'>
 						<Button disabled={shouldMapsButtonDisabled}
-							outline><FormattedMessage id='maps' />
+							outline className={`button ${isDarkMode ? 'dark' : ''}`}><FormattedMessage id='maps' />
 						</Button>
 					</Link>
 					<Link
 						style={linkStyle}
 						to='/meters'>
 						<Button disabled={shouldMetersButtonDisabled}
-							outline><FormattedMessage id='meters' />
+							outline className={`button ${isDarkMode ? 'dark' : ''}`}><FormattedMessage id='meters' />
 						</Button>
 					</Link>
 					<Link
 						style={adminViewableLinkStyle}
 						to='/units'>
 						<Button disabled={shouldUnitsButtonDisabled}
-							outline><FormattedMessage id='units' />
+							outline className={`button ${isDarkMode ? 'dark' : ''}`}><FormattedMessage id='units' />
 						</Button>
 					</Link>
 					<Link
 						style={loginLinkStyle}
 						to='/login'>
-						<Button outline><FormattedMessage id='log.in' />
+						<Button outline className={`button ${isDarkMode ? 'dark' : ''}`}><FormattedMessage id='log.in' />
 						</Button>
 					</Link>
 					<Link
 						style={logoutLinkStyle}
 						to='/'>
-						<Button outline onClick={this.handleLogOut}><FormattedMessage id='log.out' />
+						<Button outline className={`button ${isDarkMode ? 'dark' : ''}`} onClick={this.handleLogOut}><FormattedMessage id='log.out' />
 						</Button>
 					</Link>
+					<DarkModeComponent />
 				</div>
 			</div>
 		);

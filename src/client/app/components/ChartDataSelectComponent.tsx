@@ -31,6 +31,7 @@ import { GroupsState } from 'types/redux/groups';
  * A component which allows the user to select which data should be displayed on the chart.
  */
 export default function ChartDataSelectComponent() {
+	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
 	const divBottomPadding: React.CSSProperties = {
 		paddingBottom: '15px'
 	};

@@ -35,6 +35,8 @@ export default function MeterViewComponent(props: MeterViewComponentProps) {
 		setShowEditModal(false);
 	}
 
+	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+
 	// current user state
 	const currentUser = useSelector((state: State) => state.currentUser.profile);
 	// Check for admin status
@@ -55,8 +57,8 @@ export default function MeterViewComponent(props: MeterViewComponentProps) {
 
 	// Only display limited data if not an admin.
 	return (
-		<div className="card">
-			<div className="identifier-container">
+		<div className={`card ${isDarkMode ? 'dark' : ''}`}>
+			<div className={`identifier-container ${isDarkMode ? 'dark' : ''}`}>
 				{props.meter.identifier}
 			</div>
 			{loggedInAsAdmin &&

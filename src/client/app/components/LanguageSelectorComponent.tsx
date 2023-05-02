@@ -15,6 +15,7 @@ import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 
 interface LanguageSelectProps {
 	selectedLanguage: LanguageTypes;
+	isDarkMode: boolean;
 	changeLanguage(languageType: LanguageTypes): UpdateDefaultLanguageAction;
 }
 
@@ -54,28 +55,30 @@ export default class LanguageSelectorComponent extends React.Component<LanguageS
 			margin: 0
 		};
 
+		const isDarkMode = this.props.isDarkMode;
+
 		return (
 			<div style={divBottomPadding}>
 				<p style={labelStyle}>
 					<FormattedMessage id='language' />:
 				</p>
 				<Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropdown}>
-					<DropdownToggle outline caret>
+					<DropdownToggle outline className={`button ${isDarkMode ? 'dark' : ''}`} caret>
 						{/* Show the currently selected language as its name */}
 						{LanguageNames[this.props.selectedLanguage]}
 					</DropdownToggle>
-					<DropdownMenu>
-						<DropdownItem
+					<DropdownMenu className={`${isDarkMode ? 'dark' : 'light'}`}>
+						<DropdownItem className={`${isDarkMode ? 'dark' : 'light'}`}
 							onClick={() => this.handleChangeLanguage(LanguageTypes.en)}
 						>
 							English
 						</DropdownItem>
-						<DropdownItem
+						<DropdownItem className={`${isDarkMode ? 'dark' : 'light'}`}
 							onClick={() => this.handleChangeLanguage(LanguageTypes.fr)}
 						>
 							Français
 						</DropdownItem>
-						<DropdownItem
+						<DropdownItem className={`${isDarkMode ? 'dark' : 'light'}`}
 							onClick={() => this.handleChangeLanguage(LanguageTypes.es)}
 						>
 							Español
