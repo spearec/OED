@@ -6,8 +6,11 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { ToggleDarkMode } from '../actions/graph';
-import '../styles/dark-mode.css'
 import { State } from 'types/redux/state';
+import Toggle from 'react-toggle';
+import 'react-toggle/style.css';
+import '../styles/dark-mode.css'
+import { FormattedMessage } from 'react-intl';
 
 export default function DarkModeComponent() {
 	const dispatch = useDispatch();
@@ -34,20 +37,14 @@ export default function DarkModeComponent() {
 	}, [theme]);
 
 	return (
-		<div>
-			<div className="darkmode">
-				<input
-					type="checkbox"
-					className="checkbox"
-					id="checkbox"
-					onChange={switchDarkMode}
-					checked={isDarkMode}
-				/>
-				<label htmlFor="checkbox" className="label">
-					<div className="ball"></div>
-				</label>
-			</div>
-		</div>
+		<>
+			<FormattedMessage id='dark.mode.toggle' />:
+			<Toggle
+				checked={isDarkMode}
+				onChange={switchDarkMode}
+				icons={false}
+			/>
+		</>
 	)
 }
 

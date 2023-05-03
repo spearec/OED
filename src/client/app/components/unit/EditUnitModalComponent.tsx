@@ -153,7 +153,10 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 			dispatch(removeUnsavedChanges());
 		}
 	}
-
+	const darkModeStyle = {
+		backgroundColor: (isDarkMode ? '#333333' : 'white'),
+		color: (isDarkMode ? 'white' : '#333333')
+	};
 	const tooltipStyle = {
 		...tooltipBaseStyle,
 		tooltipEditUnitView: 'help.admin.unitedit'
@@ -162,7 +165,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 	return (
 		<>
 			<Modal show={props.show} onHide={props.handleClose}>
-				<Modal.Header className={`${isDarkMode ? 'dark' : 'light'}`}>
+				<Modal.Header style={darkModeStyle}>
 					<Modal.Title> <FormattedMessage id="edit.unit" />
 						<TooltipHelpContainer page='units-edit' />
 						<div style={tooltipStyle}>
@@ -171,7 +174,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 					</Modal.Title>
 				</Modal.Header>
 				{/* when any of the unit are changed call one of the functions. */}
-				<Modal.Body className={`show-grid ${isDarkMode ? 'dark' : ''}`}>
+				<Modal.Body style={darkModeStyle}>
 					<div id="container">
 						<div id="modalChild">
 							{/* Modal content */}
@@ -181,6 +184,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 									<div style={formInputStyle}>
 										<label><FormattedMessage id="unit.identifier" /></label><br />
 										<Input
+											style={darkModeStyle}
 											name="identifier"
 											type="text"
 											onChange={e => handleStringChange(e)}
@@ -191,6 +195,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 										<div style={formInputStyle}>
 											<label>{translate('unit.name')} <label style={requiredStyle}>*</label></label>
 											<Input
+												style={darkModeStyle}
 												name='name'
 												type='text'
 												onChange={e => handleStringChange(e)}
