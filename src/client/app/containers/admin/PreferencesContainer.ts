@@ -28,7 +28,8 @@ function mapStateToProps(state: State) {
 		defaultLanguage: state.admin.defaultLanguage,
 		disableSubmitPreferences: state.admin.submitted,
 		defaultWarningFileSize: state.admin.defaultWarningFileSize,
-		defaultFileSizeLimit: state.admin.defaultFileSizeLimit
+		defaultFileSizeLimit: state.admin.defaultFileSizeLimit,
+		isDarkMode: state.graph.darkMode
 	};
 }
 

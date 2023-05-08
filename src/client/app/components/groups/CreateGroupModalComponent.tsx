@@ -27,6 +27,7 @@ import { ConversionArray } from '../../types/conversionArray';
 import { GPSPoint, isValidGPSInput } from '../../utils/calibration';
 import { notifyUser, getGPSString } from '../../utils/input'
 import { formInputStyle, tableStyle, requiredStyle, tooltipBaseStyle } from '../../styles/modalStyle';
+import { getThemeStyle } from '../../utils/darkMode';
 
 interface CreateGroupModalComponentProps {
 	possibleGraphicUnits: Set<UnitData>;
@@ -35,7 +36,7 @@ interface CreateGroupModalComponentProps {
 export default function CreateGroupModalComponent(props: CreateGroupModalComponentProps) {
 	const dispatch = useDispatch();
 
-	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+	const themeStyle = getThemeStyle(useSelector((state: State) => state.graph.darkMode));
 
 	// Meter state
 	const metersState = useSelector((state: State) => state.meters.byMeterID);
@@ -252,7 +253,7 @@ export default function CreateGroupModalComponent(props: CreateGroupModalCompone
 			</Button>
 
 			<Modal show={showModal} onHide={handleClose}>
-				<Modal.Header className={`${isDarkMode ? 'dark' : 'light'}`}>
+				<Modal.Header style={themeStyle}>
 					<Modal.Title> <FormattedMessage id="create.group" />
 						<TooltipHelpContainer page='groups-create' />
 						<div style={tooltipStyle}>
@@ -262,7 +263,7 @@ export default function CreateGroupModalComponent(props: CreateGroupModalCompone
 				</Modal.Header>
 				{/* when any of the group properties are changed call one of the functions. */}
 				{loggedInAsAdmin && // only render when logged in as Admin
-					<Modal.Body className={`show-grid ${isDarkMode ? 'dark' : ''}`}>
+					<Modal.Body style={themeStyle}>
 						<div id="container">
 							<div id="modalChild">
 								{/* Modal content */}
@@ -272,6 +273,7 @@ export default function CreateGroupModalComponent(props: CreateGroupModalCompone
 										<div style={formInputStyle}>
 											<label>{translate('group.name')} <label style={requiredStyle}>*</label></label>
 											<Input
+												style={themeStyle}
 												name='name'
 												type='text'
 												onChange={e => handleStringChange(e)}
@@ -281,6 +283,7 @@ export default function CreateGroupModalComponent(props: CreateGroupModalCompone
 										< div style={formInputStyle}>
 											<label><FormattedMessage id="group.defaultGraphicUnit" /></label>
 											<Input
+												style={themeStyle}
 												name='defaultGraphicUnit'
 												type='select'
 												value={state.defaultGraphicUnit}
@@ -298,6 +301,7 @@ export default function CreateGroupModalComponent(props: CreateGroupModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="group.displayable" /></label>
 											<Input
+												style={themeStyle}
 												name='displayable'
 												type='select'
 												value={state.displayable.toString()}
@@ -311,6 +315,7 @@ export default function CreateGroupModalComponent(props: CreateGroupModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="group.area" /></label>
 											<Input
+												style={themeStyle}
 												name="area"
 												type="number"
 												min="0"
@@ -321,6 +326,7 @@ export default function CreateGroupModalComponent(props: CreateGroupModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="group.gps" /></label>
 											<Input
+												style={themeStyle}
 												name='gps'
 												type='text'
 												onChange={e => handleStringChange(e)}
@@ -330,6 +336,7 @@ export default function CreateGroupModalComponent(props: CreateGroupModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="group.note" /></label>
 											<Input
+												style={themeStyle}
 												name='note'
 												type='textarea'
 												onChange={e => handleStringChange(e)}
@@ -418,7 +425,7 @@ export default function CreateGroupModalComponent(props: CreateGroupModalCompone
 							</div>
 						</div>
 					</Modal.Body>}
-				<Modal.Footer className={`${isDarkMode ? 'dark' : 'light'}`}>
+				<Modal.Footer style={themeStyle}>
 					{/* Hides the modal */}
 					<Button variant="secondary" onClick={handleClose}>
 						<FormattedMessage id="discard.changes" />

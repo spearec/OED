@@ -8,13 +8,14 @@ import { Button } from 'reactstrap';
 import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { State } from 'types/redux/state';
+import { getThemeStyle } from '../../../utils/darkMode';
 
 interface ManageUserLinkButtonComponentProps {
 	style?: React.CSSProperties;
 }
 
 export default function ManageUsersLinkButtonComponent(props: ManageUserLinkButtonComponentProps) {
-	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+	const themeStyle = getThemeStyle(useSelector((state: State) => state.graph.darkMode));
 
 	const inlineButtonStyle: React.CSSProperties = {
 		display: 'inline',
@@ -23,6 +24,6 @@ export default function ManageUsersLinkButtonComponent(props: ManageUserLinkButt
 
 	return (
 		<Link style={{ ...inlineButtonStyle, ...props.style }} to='/users' >
-			<Button outline className={`button ${isDarkMode ? 'dark' : ''}`}><FormattedMessage id='users'/> </Button></Link>
+			<Button outline style={themeStyle}><FormattedMessage id='users'/> </Button></Link>
 	)
 }

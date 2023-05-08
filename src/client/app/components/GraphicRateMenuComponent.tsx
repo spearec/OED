@@ -10,6 +10,7 @@ import Select from 'react-select';
 import translate from '../utils/translate';
 import { updateLineGraphRate } from '../actions/graph'
 import { LineGraphRate, LineGraphRates } from '../types/redux/graph';
+import '../styles/index.css';
 
 /**
  * React component that controls the line graph rate menu

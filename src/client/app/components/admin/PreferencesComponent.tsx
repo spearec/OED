@@ -20,6 +20,7 @@ import { LanguageTypes } from '../../types/redux/i18n';
 import TimeZoneSelect from '../TimeZoneSelect';
 import store from '../../index';
 import { fetchPreferencesIfNeeded, submitPreferences } from '../../actions/admin';
+import { getThemeStyle } from '../../utils/darkMode';
 
 interface PreferencesProps {
 	displayTitle: string;
@@ -30,6 +31,7 @@ interface PreferencesProps {
 	disableSubmitPreferences: boolean;
 	defaultWarningFileSize: number;
 	defaultFileSizeLimit: number;
+	isDarkMode: boolean;
 	updateDisplayTitle(title: string): UpdateDisplayTitleAction;
 	updateDefaultChartType(defaultChartToRender: ChartTypes): UpdateDefaultChartToRenderAction;
 	toggleDefaultBarStacking(): ToggleDefaultBarStackingAction;
@@ -69,6 +71,7 @@ class PreferencesComponent extends React.Component<PreferencesPropsWithIntl> {
 			margin: 0,
 			paddingBottom: '5px'
 		};
+		const themeStyle = getThemeStyle(this.props.isDarkMode);
 		const messages = defineMessages({ name: { id: 'name' } });
 		return (
 			<div>
@@ -77,6 +80,7 @@ class PreferencesComponent extends React.Component<PreferencesPropsWithIntl> {
 						<FormattedMessage id='default.site.title' />:
 					</p>
 					<Input
+						style={themeStyle}
 						type='text'
 						placeholder={this.props.intl.formatMessage(messages.name)}
 						value={this.props.displayTitle}
@@ -203,13 +207,14 @@ class PreferencesComponent extends React.Component<PreferencesPropsWithIntl> {
 					<p style={titleStyle}>
 						<FormattedMessage id='default.time.zone' />:
 					</p>
-					<TimeZoneSelect current={this.props.defaultTimeZone} handleClick={this.handleDefaultTimeZoneChange} />
+					<TimeZoneSelect current={this.props.defaultTimeZone} handleClick={this.handleDefaultTimeZoneChange}/>
 				</div>
 				<div style={bottomPaddingStyle}>
 					<p style={titleStyle}>
 						<FormattedMessage id='default.warning.file.size' />:
 					</p>
 					<Input
+						style={themeStyle}
 						type='number'
 						value={this.props.defaultWarningFileSize}
 						onChange={this.handleDefaultWarningFileSizeChange}
@@ -221,6 +226,7 @@ class PreferencesComponent extends React.Component<PreferencesPropsWithIntl> {
 						<FormattedMessage id='default.file.size.limit' />:
 					</p>
 					<Input
+						style={themeStyle}
 						type='number'
 						value={this.props.defaultFileSizeLimit}
 						onChange={this.handleDefaultFileSizeLimitChange}

@@ -27,6 +27,7 @@ export default function ChartSelectComponent() {
 		fontWeight: 'bold',
 		margin: 0
 	};
+	const themeClassName = useSelector((state: State) => state.graph.darkMode) ? 'dark' : '';
 
 	const dispatch = useDispatch();
 	const [expand, setExpand] = useState(false);
@@ -34,34 +35,36 @@ export default function ChartSelectComponent() {
 		{ value: map.id, label: map.name.trim(), isDisabled: !(map.origin && map.opposite) } as SelectOption
 	)), 'label');
 
-	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
-
 	return (
 		<div style={divBottomPadding}>
 			<p style={labelStyle}>
 				<FormattedMessage id='graph.type' />:
 			</p>
 			<Dropdown isOpen={expand} toggle={() => setExpand(!expand)}>
-				<DropdownToggle outline className={`button ${isDarkMode ? 'dark' : ''}`} caret>
+				<DropdownToggle outline caret className={themeClassName}>
 					<FormattedMessage id={useSelector((state: State) => state.graph.chartToRender)} />
 				</DropdownToggle>
-				<DropdownMenu className={`${isDarkMode ? 'dark' : 'light'}`}>
-					<DropdownItem className={`${isDarkMode ? 'dark' : 'light'}`}
+				<DropdownMenu className={themeClassName}>
+					<DropdownItem
+						className={themeClassName}
 						onClick={() => dispatch({type: 'CHANGE_CHART_TO_RENDER', chartType: ChartTypes.line})}
 					>
 						<FormattedMessage id='line' />
 					</DropdownItem>
-					<DropdownItem className={`${isDarkMode ? 'dark' : 'light'}`}
+					<DropdownItem
+						className={themeClassName}
 						onClick={() => dispatch({type: 'CHANGE_CHART_TO_RENDER', chartType: ChartTypes.bar})}
 					>
 						<FormattedMessage id='bar' />
 					</DropdownItem>
-					<DropdownItem className={`${isDarkMode ? 'dark' : 'light'}`}
+					<DropdownItem
+						className={themeClassName}
 						onClick={() => dispatch({type: 'CHANGE_CHART_TO_RENDER', chartType: ChartTypes.compare})}
 					>
 						<FormattedMessage id='compare' />
 					</DropdownItem>
-					<DropdownItem className={`${isDarkMode ? 'dark' : 'light'}`}
+					<DropdownItem
+						className={themeClassName}
 						onClick={() => {
 							dispatch({type: 'CHANGE_CHART_TO_RENDER', chartType: ChartTypes.map});
 							if (Object.keys(sortedMaps).length === 1) {

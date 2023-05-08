@@ -117,6 +117,7 @@
     "request": "~2.88.2",
     "request-promise-native": "~1.0.7",
     "serve-favicon": "~2.5.0",
+    "styled-components": "~5.3.10",
     "xml2js": "~0.4.19"
   },
   "devDependencies": {

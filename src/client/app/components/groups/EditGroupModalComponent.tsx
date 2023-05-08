@@ -35,6 +35,7 @@ import ConfirmActionModalComponent from '../ConfirmActionModalComponent'
 import { DataType } from '../../types/Datasources';
 import { groupsApi } from '../../utils/api';
 import { formInputStyle, tableStyle, requiredStyle, tooltipBaseStyle } from '../../styles/modalStyle';
+import { getThemeStyle } from '../../utils/darkMode';
 
 interface EditGroupModalComponentProps {
 	show: boolean;
@@ -49,7 +50,7 @@ interface EditGroupModalComponentProps {
 export default function EditGroupModalComponent(props: EditGroupModalComponentProps) {
 	const dispatch = useDispatch();
 
-	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+	const themeStyle = getThemeStyle(useSelector((state: State) => state.graph.darkMode));
 
 	// Meter state
 	const metersState = useSelector((state: State) => state.meters.byMeterID);
@@ -354,7 +355,7 @@ export default function EditGroupModalComponent(props: EditGroupModalComponentPr
 				actionRejectText={deleteRejectText} />
 			<Modal show={props.show} onHide={props.handleClose}>
 				{/* In a number of the items that follow, what is shown varies on whether you are an admin. */}
-				<Modal.Header className={`${isDarkMode ? 'dark' : 'light'}`}>
+				<Modal.Header style={themeStyle}>
 					<Modal.Title> <FormattedMessage id={loggedInAsAdmin ? 'edit.group' : 'group.details'} />
 						<TooltipHelpContainer page='groups-edit' />
 						<div style={tooltipStyle}>
@@ -362,7 +363,7 @@ export default function EditGroupModalComponent(props: EditGroupModalComponentPr
 						</div>
 					</Modal.Title>
 				</Modal.Header>
-				<Modal.Body className={`show-grid ${isDarkMode ? 'dark' : ''}`}>
+				<Modal.Body style={themeStyle}>
 					<div id="container">
 						<div id="modalChild">
 							{/* Modal content */}
@@ -373,6 +374,7 @@ export default function EditGroupModalComponent(props: EditGroupModalComponentPr
 										<div style={formInputStyle}>
 											<label>{translate('group.name')} <label style={requiredStyle}>*</label></label>
 											<Input
+												style={themeStyle}
 												name='name'
 												type='text'
 												onChange={e => handleStringChange(e)}
@@ -388,6 +390,7 @@ export default function EditGroupModalComponent(props: EditGroupModalComponentPr
 										< div style={formInputStyle}>
 											<label><FormattedMessage id="group.defaultGraphicUnit" /></label>
 											<Input
+												style={themeStyle}
 												name='defaultGraphicUnit'
 												type='select'
 												value={groupState.defaultGraphicUnit}
@@ -415,6 +418,7 @@ export default function EditGroupModalComponent(props: EditGroupModalComponentPr
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="group.displayable" /></label>
 											<Input
+												style={themeStyle}
 												name='displayable'
 												type='select'
 												value={groupState.displayable.toString()}
@@ -430,6 +434,7 @@ export default function EditGroupModalComponent(props: EditGroupModalComponentPr
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="group.area" /></label>
 											<Input
+												style={themeStyle}
 												name="area"
 												type="number"
 												min="0"
@@ -442,6 +447,7 @@ export default function EditGroupModalComponent(props: EditGroupModalComponentPr
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="group.gps" /></label>
 											<Input
+												style={themeStyle}
 												name='gps'
 												type='text'
 												onChange={e => handleStringChange(e)}
@@ -453,6 +459,7 @@ export default function EditGroupModalComponent(props: EditGroupModalComponentPr
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="group.note" /></label>
 											<Input
+												style={themeStyle}
 												name='note'
 												type='textarea'
 												onChange={e => handleStringChange(e)}
@@ -564,7 +571,7 @@ export default function EditGroupModalComponent(props: EditGroupModalComponentPr
 						</div>
 					</div>
 				</Modal.Body>
-				<Modal.Footer className={`${isDarkMode ? 'dark' : 'light'}`}>
+				<Modal.Footer style={themeStyle}>
 					{/* Delete, discard & save buttons if admin and close button if not. */}
 					{loggedInAsAdmin ?
 						<div>

@@ -12,6 +12,7 @@ import Dropdown from 'reactstrap/lib/Dropdown';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
 import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
+import { getThemeStyle } from '../utils/darkMode';
 
 interface LanguageSelectProps {
 	selectedLanguage: LanguageTypes;
@@ -55,7 +56,7 @@ export default class LanguageSelectorComponent extends React.Component<LanguageS
 			margin: 0
 		};
 
-		const isDarkMode = this.props.isDarkMode;
+		const themeStyle = getThemeStyle(this.props.isDarkMode);
 
 		return (
 			<div style={divBottomPadding}>
@@ -63,22 +64,25 @@ export default class LanguageSelectorComponent extends React.Component<LanguageS
 					<FormattedMessage id='language' />:
 				</p>
 				<Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropdown}>
-					<DropdownToggle outline className={`button ${isDarkMode ? 'dark' : ''}`} caret>
+					<DropdownToggle outline style={themeStyle} caret>
 						{/* Show the currently selected language as its name */}
 						{LanguageNames[this.props.selectedLanguage]}
 					</DropdownToggle>
-					<DropdownMenu className={`${isDarkMode ? 'dark' : 'light'}`}>
-						<DropdownItem className={`${isDarkMode ? 'dark' : 'light'}`}
+					<DropdownMenu style={themeStyle}>
+						<DropdownItem
+							style={themeStyle}
 							onClick={() => this.handleChangeLanguage(LanguageTypes.en)}
 						>
 							English
 						</DropdownItem>
-						<DropdownItem className={`${isDarkMode ? 'dark' : 'light'}`}
+						<DropdownItem
+							style={themeStyle}
 							onClick={() => this.handleChangeLanguage(LanguageTypes.fr)}
 						>
 							Français
 						</DropdownItem>
-						<DropdownItem className={`${isDarkMode ? 'dark' : 'light'}`}
+						<DropdownItem
+							style={themeStyle}
 							onClick={() => this.handleChangeLanguage(LanguageTypes.es)}
 						>
 							Español

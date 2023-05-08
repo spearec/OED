@@ -7,6 +7,7 @@ import '../styles/modal.css';
 import translate from '../utils/translate';
 import { State } from '../types/redux/state';
 import { useSelector } from 'react-redux';
+import { getThemeStyle } from '../utils/darkMode';
 
 interface ConfirmActionModalComponentProps {
 	// Control this through the parent component to open/close this modal
@@ -43,8 +44,6 @@ interface ConfirmActionModalComponentProps {
  */
 export default function ConfirmActionModalComponent(props: ConfirmActionModalComponentProps) {
 
-	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
-
 	const handleClose = () => {
 		props.handleClose();
 	}
@@ -57,16 +56,18 @@ export default function ConfirmActionModalComponent(props: ConfirmActionModalCom
 		width: '100%'
 	};
 
+	const themeClassName = useSelector((state: State) => state.graph.darkMode) ? 'dark' : '';
+
 	return (
 		<>
 			<Modal show={props.show} onHide={props.handleClose} centered>
-				<Modal.Header className={`${isDarkMode ? 'dark' : 'light'}`}>
+				<Modal.Header className={themeClassName}>
 					<Modal.Title>
 						{props.actionTitle ? props.actionTitle : translate('confirm.action')}
 					</Modal.Title>
 				</Modal.Header>
 				{/* when any of the conversion are changed call one of the functions. */}
-				<Modal.Body className={`show-grid ${isDarkMode ? 'dark' : ''}`}>
+				<Modal.Body className={`show-grid ${themeClassName}`}>
 					<div id="container">
 						<div id="modalChild">
 							{/* Modal content */}
@@ -81,7 +82,7 @@ export default function ConfirmActionModalComponent(props: ConfirmActionModalCom
 						</div>
 					</div>
 				</Modal.Body>
-				<Modal.Footer className={`${isDarkMode ? 'dark' : 'light'}`}>
+				<Modal.Footer className={themeClassName}>
 					{/* Do not execute the actionFunction and instead close the action confirm modal */}
 					<Button variant="secondary" onClick={handleClose}>
 						{/* Render the action reject text if it was passed, or else 'no' */}

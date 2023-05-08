@@ -13,6 +13,7 @@ import { UnitData } from 'types/redux/units';
 import translate from '../../utils/translate';
 import { State } from 'types/redux/state';
 import { useSelector } from 'react-redux';
+import { getThemeStyle } from '../../utils/darkMode';
 
 interface UnitViewComponentProps {
 	unit: UnitData;
@@ -33,9 +34,10 @@ export default function UnitViewComponent(props: UnitViewComponentProps) {
 	}
 
 	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+	const themeStyle = getThemeStyle(isDarkMode);
 
 	return (
-		<div className={`card ${isDarkMode ? 'dark' : ''}`}>
+		<div className="card" style={themeStyle}>
 			<div className={`identifier-container ${isDarkMode ? 'dark' : ''}`}>
 				{props.unit.identifier}
 			</div>

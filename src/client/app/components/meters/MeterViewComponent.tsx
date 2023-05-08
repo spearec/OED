@@ -15,6 +15,7 @@ import { CurrentUserState } from 'types/redux/currentUser';
 import '../../styles/card-page.css';
 import { UnitData } from '../../types/redux/units';
 import { noUnitTranslated } from '../../utils/input';
+import { getThemeStyle } from '../../utils/darkMode';
 
 interface MeterViewComponentProps {
 	meter: MeterData;
@@ -35,7 +36,8 @@ export default function MeterViewComponent(props: MeterViewComponentProps) {
 		setShowEditModal(false);
 	}
 
-	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+	const isDarkMode = useSelector((state: State) => state.graph.darkMode)
+	const themeStyle = getThemeStyle(isDarkMode);
 
 	// current user state
 	const currentUser = useSelector((state: State) => state.currentUser.profile);
@@ -57,7 +59,7 @@ export default function MeterViewComponent(props: MeterViewComponentProps) {
 
 	// Only display limited data if not an admin.
 	return (
-		<div className={`card ${isDarkMode ? 'dark' : ''}`}>
+		<div className="card" style={themeStyle}>
 			<div className={`identifier-container ${isDarkMode ? 'dark' : ''}`}>
 				{props.meter.identifier}
 			</div>

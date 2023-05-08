@@ -18,6 +18,7 @@ import translate from '../utils/translate';
 import { ChartTypes } from '../types/redux/graph';
 import { lineUnitLabel, barUnitLabel } from '../utils/graphics';
 import { ConversionData } from '../types/redux/conversions';
+import { getThemeStyle } from '../utils/darkMode';
 
 /**
  * Creates export buttons and does code for handling export to CSV files.
@@ -41,7 +42,7 @@ export default function ExportComponent() {
 	// Time range of graphic
 	const timeInterval = graphState.timeInterval;
 
-	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+	const themeStyle = getThemeStyle(useSelector((state: State) => state.graph.darkMode));
 
 	// Function to export the data in a graph.
 	const exportGraphReading = () => {
@@ -277,14 +278,14 @@ export default function ExportComponent() {
 	return (
 		<>
 			<div>
-				<Button outline className={`button ${isDarkMode ? 'dark' : ''}`}onClick={exportGraphReading}>
+				<Button outline style={themeStyle} onClick={exportGraphReading}>
 					<FormattedMessage id='export.graph.data' />
 				</Button>
 				<TooltipMarkerComponent page='home' helpTextId='help.home.export.graph.data' />
 			</div>
 			{/* Only raw export if a line graph */}
 			{graphState.chartToRender === 'line' ? <div style={{ paddingTop: '10px' }}>
-				<Button outline className={`button ${isDarkMode ? 'dark' : ''}`} onClick={exportRawReadings}>
+				<Button outline style={themeStyle} onClick={exportRawReadings}>
 					<FormattedMessage id='export.raw.graph.data' />
 				</Button>
 			</div> : ''}

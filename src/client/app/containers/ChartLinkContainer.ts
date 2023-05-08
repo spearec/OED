@@ -59,11 +59,9 @@ function mapStateToProps(state: State) {
 	const unitID = state.graph.selectedUnit;
 	linkText += `&unitID=${unitID.toString()}`;
 	linkText += `&rate=${state.graph.lineGraphRate.label.toString()},${state.graph.lineGraphRate.rate.toString()}`;
-	const isDarkMode = state.graph.darkMode;
 	return {
 		linkText,
-		chartType,
-		isDarkMode
+		chartType
 	};
 }
 

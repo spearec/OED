@@ -20,6 +20,7 @@ import * as _ from 'lodash';
 import {formInputStyle, tableStyle, requiredStyle, tooltipBaseStyle} from '../../styles/modalStyle';
 import { State } from '../../types/redux/state';
 import { useSelector } from 'react-redux';
+import { getThemeStyle } from '../../utils/darkMode';
 
 interface CreateConversionModalComponentProps {
 	conversionsState: ConversionData[];
@@ -30,7 +31,7 @@ export default function CreateConversionModalComponent(props: CreateConversionMo
 
 	const dispatch = useDispatch();
 
-	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+	const themeStyle = getThemeStyle(useSelector((state: State) => state.graph.darkMode));
 
 	const defaultValues = {
 		// Invalid source/destination ids arbitrarily set to -999.
@@ -164,7 +165,7 @@ export default function CreateConversionModalComponent(props: CreateConversionMo
 			</Button>
 
 			<Modal show={showModal} onHide={handleClose}>
-				<Modal.Header className={`${isDarkMode ? 'dark' : 'light'}`}>
+				<Modal.Header style={themeStyle}>
 					<Modal.Title> <FormattedMessage id="create.conversion" />
 						<TooltipHelpContainer page='conversions-create' />
 						<div style={tooltipStyle}>
@@ -173,7 +174,7 @@ export default function CreateConversionModalComponent(props: CreateConversionMo
 					</Modal.Title>
 				</Modal.Header>
 				{/* when any of the conversion are changed call one of the functions. */}
-				<Modal.Body className={`show-grid ${isDarkMode ? 'dark' : ''}`}>
+				<Modal.Body style={themeStyle}>
 					<div id="container">
 						<div id="modalChild">
 							{/* Modal content */}
@@ -183,6 +184,7 @@ export default function CreateConversionModalComponent(props: CreateConversionMo
 									<div style={formInputStyle}>
 										<label>{translate('conversion.source')} <label style={requiredStyle}>*</label></label>
 										<Input
+											style={themeStyle}
 											name='sourceId'
 											type='select'
 											defaultValue={-999}
@@ -203,6 +205,7 @@ export default function CreateConversionModalComponent(props: CreateConversionMo
 									<div style={formInputStyle}>
 										<label>{translate('conversion.destination')} <label style={requiredStyle}>*</label></label>
 										<Input
+											style={themeStyle}
 											name='destinationId'
 											type='select'
 											defaultValue={-999}
@@ -223,6 +226,7 @@ export default function CreateConversionModalComponent(props: CreateConversionMo
 									<div style={formInputStyle}>
 										<label><FormattedMessage id="conversion.bidirectional" /></label>
 										<Input
+											style={themeStyle}
 											name='bidirectional'
 											type='select'
 											onChange={e => handleBooleanChange(e)}>
@@ -235,6 +239,7 @@ export default function CreateConversionModalComponent(props: CreateConversionMo
 									<div style={formInputStyle}>
 										<label><FormattedMessage id="conversion.slope" /></label>
 										<Input
+											style={themeStyle}
 											name='slope'
 											type='number'
 											defaultValue={state.slope}
@@ -245,6 +250,7 @@ export default function CreateConversionModalComponent(props: CreateConversionMo
 									<div style={formInputStyle}>
 										<label><FormattedMessage id="conversion.intercept" /></label>
 										<Input
+											style={themeStyle}
 											name='intercept'
 											type='number'
 											onChange={e => handleNumberChange(e)}
@@ -254,6 +260,7 @@ export default function CreateConversionModalComponent(props: CreateConversionMo
 									<div style={formInputStyle}>
 										<label><FormattedMessage id="conversion.note" /></label>
 										<Input
+											style={themeStyle}
 											name='note'
 											type='textarea'
 											onChange={e => handleStringChange(e)}
@@ -264,7 +271,7 @@ export default function CreateConversionModalComponent(props: CreateConversionMo
 						</div>
 					</div>
 				</Modal.Body>
-				<Modal.Footer className={`${isDarkMode ? 'dark' : 'light'}`}>
+				<Modal.Footer style={themeStyle}>
 					{/* Hides the modal */}
 					<Button variant="secondary" onClick={handleClose}>
 						<FormattedMessage id="discard.changes" />

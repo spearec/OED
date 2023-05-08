@@ -2,6 +2,28 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+:root {
+	--text-color: #000;
+	--bg-color: #fff;
+	--disabled-text-color: #ccc;
+	--disabled-bg-color: #333;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--text-color: #fff;
+		--bg-color: #333;
+		--disabled-text-color: #ccc;
+		--disabled-bg-color: #333;
+	}
+}
+
+body {
+	background-color: var(--bg-color);
+	color: var(--text-color);
+}
+
+
 html {
 	position: relative;
 	min-height: 100%;
@@ -9,12 +31,31 @@ html {
 
 .js-plotly-plot {
 	width: 100%;
+	background-color: var(--bg-color);
 }
 
-.darkmode select {
-	background-color: white;
+.dropdown-toggle {
+	background-color: var(--bg-color);
+	color: var(--text-color);
 }
 
-.darkmode button {
-	background-color: white;
+.dropdown-menu {
+	background-color: var(--bg-color);
+}
+
+.dropdown-item {
+	background-color: var(--bg-color);
+	color: var(--text-color);
+}
+
+/* .react-select-container {
+	background-color: var(--bg-color);
+	color: var(--text-color);
+	font-size: 30px;
+	border-color: green;
+} */
+
+.button {
+	background-color: var(--bg-color);
+	color: var(--text-color);
 }

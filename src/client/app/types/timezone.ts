@@ -11,4 +11,5 @@ export interface TimeZones {
 export interface TimeZoneOption {
 	value: string;
 	label: string;
+	isDarkMode: boolean;
 }

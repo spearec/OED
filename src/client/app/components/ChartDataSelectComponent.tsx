@@ -26,12 +26,12 @@ import { Dispatch } from '../types/redux/actions';
 import { UnitsState } from '../types/redux/units';
 import { MetersState } from 'types/redux/meters';
 import { GroupsState } from 'types/redux/groups';
+import { getThemeStyle } from '../utils/darkMode';
 
 /**
  * A component which allows the user to select which data should be displayed on the chart.
  */
 export default function ChartDataSelectComponent() {
-	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
 	const divBottomPadding: React.CSSProperties = {
 		paddingBottom: '15px'
 	};
@@ -263,13 +263,17 @@ export default function ChartDataSelectComponent() {
 	// Must specify type if using ThunkDispatch
 	const dispatch: Dispatch = useDispatch();
 
+	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+	const themeClassName = isDarkMode ? 'dark' : '';
+	const themeStyle = getThemeStyle(isDarkMode);
+
 	return (
 		<div>
 			<p style={labelStyle}>
 				<FormattedMessage id='groups' />:
 			</p>
 			<div style={divBottomPadding}>
-				<MultiSelectComponent
+				<MultiSelectComponent style={themeStyle}
 					options={dataProps.sortedGroups}
 					selectedOptions={dataProps.compatibleSelectedGroups}
 					placeholder={intl.formatMessage(messages.selectGroups)}

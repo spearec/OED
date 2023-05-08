@@ -36,7 +36,7 @@ interface EditConversionModalComponentProps {
 export default function EditConversionModalComponent(props: EditConversionModalComponentProps) {
 	const dispatch = useDispatch();
 
-	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+	const themeClassName = useSelector((state: State) => state.graph.darkMode) ? 'dark' : '';
 
 	// Set existing conversion values
 	const values = {
@@ -148,7 +148,7 @@ export default function EditConversionModalComponent(props: EditConversionModalC
 				actionConfirmText={deleteConfirmText}
 				actionRejectText={deleteRejectText} />
 			<Modal show={props.show} onHide={props.handleClose}>
-				<Modal.Header className={`${isDarkMode ? 'dark' : 'light'}`}>
+				<Modal.Header className={themeClassName}>
 					<Modal.Title> <FormattedMessage id="conversion.edit.conversion" />
 						<TooltipHelpContainer page='conversions-edit' />
 						<div style={tooltipStyle}>
@@ -157,7 +157,7 @@ export default function EditConversionModalComponent(props: EditConversionModalC
 					</Modal.Title>
 				</Modal.Header>
 				{/* when any of the conversion are changed call one of the functions. */}
-				<Modal.Body className={`show-grid ${isDarkMode ? 'dark' : ''}`}>
+				<Modal.Body className={themeClassName}>
 					<div id="container">
 						<div id="modalChild">
 							{/* Modal content */}
@@ -167,6 +167,7 @@ export default function EditConversionModalComponent(props: EditConversionModalC
 									<div style={formInputStyle}>
 										<label>{translate('conversion.source')} <label style={requiredStyle}>*</label></label>
 										<Input
+											className={themeClassName}
 											name='sourceId'
 											type='text'
 											defaultValue={props.unitsState[state.sourceId].identifier}
@@ -178,6 +179,7 @@ export default function EditConversionModalComponent(props: EditConversionModalC
 										<div style={formInputStyle}>
 											<label>{translate('conversion.destination')} <label style={requiredStyle}>*</label></label>
 											<Input
+												className={themeClassName}
 												name='destinationId'
 												type='text'
 												defaultValue={props.unitsState[state.destinationId].identifier}
@@ -189,6 +191,7 @@ export default function EditConversionModalComponent(props: EditConversionModalC
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="conversion.bidirectional" /></label>
 											<Input
+												className={themeClassName}
 												name='bidirectional'
 												type='select'
 												defaultValue={state.bidirectional.toString()}
@@ -202,6 +205,7 @@ export default function EditConversionModalComponent(props: EditConversionModalC
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="conversion.slope" /></label>
 											<Input
+												className={themeClassName}
 												name='slope'
 												type="number"
 												defaultValue={state.slope}
@@ -211,6 +215,7 @@ export default function EditConversionModalComponent(props: EditConversionModalC
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="conversion.intercept" /></label>
 											<Input
+												className={themeClassName}
 												name="intercept"
 												type="number"
 												defaultValue={state.intercept}
@@ -220,6 +225,7 @@ export default function EditConversionModalComponent(props: EditConversionModalC
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="conversion.note" /></label>
 											<Input
+												className={themeClassName}
 												name="note"
 												type="textarea"
 												defaultValue={state.note}
@@ -232,7 +238,7 @@ export default function EditConversionModalComponent(props: EditConversionModalC
 						</div>
 					</div>
 				</Modal.Body>
-				<Modal.Footer className={`${isDarkMode ? 'dark' : 'light'}`}>
+				<Modal.Footer className={themeClassName}>
 					<Button variant="danger" onClick={handleDeleteConfirmationModalOpen}>
 						<FormattedMessage id="conversion.delete.conversion" />
 					</Button>

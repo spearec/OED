@@ -20,6 +20,7 @@ import 'rc-slider/assets/index.css';
 import MapChartSelectComponent from './MapChartSelectComponent';
 import ReactTooltip from 'react-tooltip';
 import GraphicRateMenuComponent from './GraphicRateMenuComponent';
+import { getThemeStyle } from '../utils/darkMode';
 
 const Slider = createSliderWithTooltip(sliderWithoutTooltips);
 
@@ -83,7 +84,7 @@ class UIOptionsComponent extends React.Component<UIOptionsPropsWithIntl, UIOptio
 		const zIndexFix: React.CSSProperties = {
 			zIndex: 0
 		};
-		const isDarkMode = this.props.isDarkMode;
+		const themeStyle = getThemeStyle(this.props.isDarkMode);
 
 		return (
 			<div>
@@ -265,7 +266,7 @@ class UIOptionsComponent extends React.Component<UIOptionsPropsWithIntl, UIOptio
 
 				<div style={divTopPadding} className='d-none d-lg-block'>
 					<Button
-						className={`button ${isDarkMode ? 'dark' : ''}`}
+						style={themeStyle}
 						onClick={this.handleSetOptionsVisibility}
 						outline
 					>

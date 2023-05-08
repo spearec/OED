@@ -18,11 +18,12 @@ import { notifyUser } from '../../utils/input'
 import { formInputStyle, tableStyle, requiredStyle, tooltipBaseStyle } from '../../styles/modalStyle';
 import { State } from '../../types/redux/state';
 import { useSelector } from 'react-redux';
+import { getThemeStyle } from '../../utils/darkMode';
 
 export default function CreateUnitModalComponent() {
 	const dispatch = useDispatch();
 
-	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+	const themeStyle = getThemeStyle(useSelector((state: State) => state.graph.darkMode));
 
 	const defaultValues = {
 		name: '',
@@ -104,7 +105,7 @@ export default function CreateUnitModalComponent() {
 			</Button>
 
 			<Modal show={showModal} onHide={handleClose}>
-				<Modal.Header className={`${isDarkMode ? 'dark' : 'light'}`}>
+				<Modal.Header style={themeStyle}>
 					<Modal.Title> <FormattedMessage id="create.unit" />
 						<TooltipHelpContainer page='units-create' />
 						<div style={tooltipStyle}>
@@ -113,7 +114,7 @@ export default function CreateUnitModalComponent() {
 					</Modal.Title>
 				</Modal.Header>
 				{/* when any of the unit properties are changed call one of the functions. */}
-				<Modal.Body className={`show-grid ${isDarkMode ? 'dark' : ''}`}>
+				<Modal.Body style={themeStyle}>
 					<div id="container">
 						<div id="modalChild">
 							{/* Modal content */}
@@ -123,6 +124,7 @@ export default function CreateUnitModalComponent() {
 									<div style={formInputStyle}>
 										<label><FormattedMessage id="unit.identifier" /></label>
 										<Input
+											style={themeStyle}
 											name='identifier'
 											type='text'
 											onChange={e => handleStringChange(e)}
@@ -132,6 +134,7 @@ export default function CreateUnitModalComponent() {
 									<div style={formInputStyle}>
 										<label>{translate('unit.name')} <label style={requiredStyle}>*</label></label>
 										<Input
+											style={themeStyle}
 											name='name'
 											type='text'
 											onChange={e => handleStringChange(e)}
@@ -141,6 +144,7 @@ export default function CreateUnitModalComponent() {
 									<div style={formInputStyle}>
 										<label><FormattedMessage id="unit.type.of.unit" /></label>
 										<Input
+											style={themeStyle}
 											name='typeOfUnit'
 											type='select'
 											onChange={e => handleStringChange(e)}
@@ -154,6 +158,7 @@ export default function CreateUnitModalComponent() {
 									<div style={formInputStyle}>
 										<label><FormattedMessage id="unit.represent" /></label>
 										<Input
+											style={themeStyle}
 											name='unitRepresent'
 											type='select'
 											onChange={e => handleStringChange(e)}
@@ -167,6 +172,7 @@ export default function CreateUnitModalComponent() {
 									<div style={formInputStyle}>
 										<label><FormattedMessage id="unit.dropdown.displayable" /></label>
 										<Input
+											style={themeStyle}
 											name='displayable'
 											type='select'
 											onChange={e => handleStringChange(e)}
@@ -180,6 +186,7 @@ export default function CreateUnitModalComponent() {
 									<div style={formInputStyle}>
 										<label><FormattedMessage id="unit.preferred.display" /></label>
 										<Input
+											style={themeStyle}
 											name='preferredDisplay'
 											type='select'
 											onChange={e => handleBooleanChange(e)}>
@@ -192,6 +199,7 @@ export default function CreateUnitModalComponent() {
 									<div style={formInputStyle}>
 										<label><FormattedMessage id="unit.sec.in.rate" /></label>
 										<Input
+											style={themeStyle}
 											name='secInRate'
 											type='number'
 											onChange={e => handleNumberChange(e)}
@@ -204,6 +212,7 @@ export default function CreateUnitModalComponent() {
 									<div style={formInputStyle}>
 										<label><FormattedMessage id="unit.suffix" /></label>
 										<Input
+											style={themeStyle}
 											name='suffix'
 											type='text'
 											onChange={e => handleStringChange(e)}
@@ -213,6 +222,7 @@ export default function CreateUnitModalComponent() {
 									<div style={formInputStyle}>
 										<label><FormattedMessage id="unit.note" /></label>
 										<Input
+											style={themeStyle}
 											name='note'
 											type='textarea'
 											onChange={e => handleStringChange(e)}
@@ -223,7 +233,7 @@ export default function CreateUnitModalComponent() {
 						</div>
 					</div>
 				</Modal.Body>
-				<Modal.Footer className={`${isDarkMode ? 'dark' : 'light'}`}>
+				<Modal.Footer style={themeStyle}>
 					{/* Hides the modal */}
 					<Button variant="secondary" onClick={handleClose}>
 						<FormattedMessage id="discard.changes" />

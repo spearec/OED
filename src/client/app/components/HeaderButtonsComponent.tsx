@@ -19,6 +19,8 @@ import { deleteToken } from '../utils/token';
 import { clearCurrentUser } from '../actions/currentUser';
 import { State } from '../types/redux/state';
 import { useDispatch, useSelector } from 'react-redux';
+import DarkModeComponent from './DarkModeComponent';
+import { getThemeStyle } from '../utils/darkMode';
 
 export default function HeaderButtonsComponent(args: { showCollapsedMenuButton: boolean, isModal: boolean }) {
 	const dispatch = useDispatch();
@@ -45,6 +47,7 @@ export default function HeaderButtonsComponent(args: { showCollapsedMenuButton: 
 		logoutLinkStyle: {
 			display: 'none'
 		} as React.CSSProperties,
+		themeStyle: getThemeStyle(false),
 		// The should ones tell if see but not selectable.
 		shouldHomeButtonDisabled: true,
 		shouldAdminButtonDisabled: true,
@@ -66,6 +69,8 @@ export default function HeaderButtonsComponent(args: { showCollapsedMenuButton: 
 	const currentUser = useSelector((state: State) => state.currentUser.profile);
 	// Tracks unsaved changes.
 	const unsavedChangesState = useSelector((state: State) => state.unsavedWarning.hasUnsavedChanges);
+
+	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
 
 	// This updates which page is disabled because it is the one you are on.
 	useEffect(() => {
@@ -104,23 +109,28 @@ export default function HeaderButtonsComponent(args: { showCollapsedMenuButton: 
 			// The menu title has login.
 			currentMenuTitle = translate('page.choice.login');
 		}
+		const currentThemeStyle = getThemeStyle(isDarkMode);
 		// If you have a role then check if it is CSV.
 		const renderCSVButton = Boolean(role && hasPermissions(role, UserRole.CSV));
 		// If no role then not logged in so show link to log in.
 		const renderLoginButton = role === null;
 		// If an admin then show these items, otherwise hide them.
 		const currentAdminViewableLinkStyle = {
+			...currentThemeStyle,
 			display: loggedInAsAdmin ? 'block' : 'none'
 		};
 		// Similar but need to have CSV permissions.
 		const currentCsvViewableLinkStyle: React.CSSProperties = {
+			...currentThemeStyle,
 			display: renderCSVButton ? 'block' : 'none'
 		};
 		// Show login if not and logout if you are.
 		const currentLoginLinkStyle = {
+			...currentThemeStyle,
 			display: renderLoginButton ? 'block' : 'none'
 		};
 		const currentLogoutLinkStyle = {
+			...currentThemeStyle,
 			display: !renderLoginButton ? 'block' : 'none'
 		};
 		setState(prevState => ({
@@ -129,12 +139,14 @@ export default function HeaderButtonsComponent(args: { showCollapsedMenuButton: 
 			csvViewableLinkStyle: currentCsvViewableLinkStyle,
 			loginLinkStyle: currentLoginLinkStyle,
 			logoutLinkStyle: currentLogoutLinkStyle,
-			menuTitle: currentMenuTitle
+			menuTitle: currentMenuTitle,
+			themeStyle: currentThemeStyle
 		}));
 	}, [currentUser]);
 
 	// Style for dropdown
 	const dropAlign: React.CSSProperties = {
+		...state.themeStyle,
 		right: 0,
 		margin: 0
 	};
@@ -171,7 +183,7 @@ export default function HeaderButtonsComponent(args: { showCollapsedMenuButton: 
 					to shift the help icon to the left then there is enough space for the help
 					text box and this does not happen. The current possibilities for menuTitle
 					do this so the issue is not seen by the user. */}
-					<Dropdown.Toggle variant="outline-dark">{state.menuTitle}</Dropdown.Toggle>
+					<Dropdown.Toggle variant="outline-dark" style={state.themeStyle}>{state.menuTitle}</Dropdown.Toggle>
 					<Dropdown.Menu style={dropAlign} align='end'>
 						<Dropdown.Item
 							style={state.adminViewableLinkStyle}
@@ -218,6 +230,7 @@ export default function HeaderButtonsComponent(args: { showCollapsedMenuButton: 
 							as={Link} to='/units'>
 							<FormattedMessage id='units' />
 						</Dropdown.Item>
+						<DarkModeComponent />
 						<Dropdown.Divider />
 						<Dropdown.Item
 							style={state.loginLinkStyle}

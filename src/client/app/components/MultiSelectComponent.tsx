@@ -12,6 +12,7 @@ interface MultiSelectProps<I> {
 	selectedOptions: Array<SelectOption & I> | undefined;
 	singleSelect?: boolean;
 	onValuesChange(values: Array<SelectOption & I>): void;
+	style?: React.CSSProperties;
 }
 
 interface MultiSelectState {
@@ -40,7 +41,8 @@ export default class MultiSelectComponent<I> extends React.Component<MultiSelect
 				styles={{
 					option: (baseStyles, { data }) => ({
 						...baseStyles,
-						...data.style
+						...data.style,
+						...this.props.style
 					})
 				}}
 				isMulti
@@ -50,6 +52,7 @@ export default class MultiSelectComponent<I> extends React.Component<MultiSelect
 				onChange={this.onValuesChangeInternal}
 				isClearable={false}
 				closeMenuOnSelect={false}
+				className={'dark'}
 			/>
 		);
 	}

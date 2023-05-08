@@ -16,6 +16,7 @@ import { isRoleAdmin } from '../../utils/hasPermissions';
 import translate from '../../utils/translate';
 import { UnitData } from '../../types/redux/units';
 import { noUnitTranslated } from '../../utils/input';
+import { getThemeStyle } from '../../utils/darkMode';
 
 interface GroupViewComponentProps {
 	group: GroupDefinition;
@@ -43,14 +44,15 @@ export default function GroupViewComponent(props: GroupViewComponentProps) {
 	// Check for admin status
 	const loggedInAsAdmin = (currentUser !== null) && isRoleAdmin(currentUser.role);
 
-	const isDarkMode = useSelector((state:State) => state.graph.darkMode);
+	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+	const themeStyle = getThemeStyle(isDarkMode);
 
 	// Set up to display the units associated with the group as the unit identifier.
 	// unit state
 	const unitState = useSelector((state: State) => state.units.units);
 
 	return (
-		<div className={`card ${isDarkMode ? 'dark' : ''}`}>
+		<div className="card" style={themeStyle}>
 			{/* Use identifier-container since similar and groups only have name */}
 			<div className={`identifier-container ${isDarkMode ? 'dark' : ''}`}>
 				{props.group.name}

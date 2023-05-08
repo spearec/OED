@@ -23,6 +23,7 @@ import { unitsCompatibleWithUnit } from '../../utils/determineCompatibleUnits';
 import { ConversionArray } from '../../types/conversionArray';
 import { notifyUser } from '../../utils/input'
 import { formInputStyle, tableStyle, requiredStyle, tooltipBaseStyle } from '../../styles/modalStyle';
+import { getThemeStyle } from '../../utils/darkMode';
 
 // TODO Moved the possible meters/graphic units calculations up to the details component
 // This was to prevent the calculations from being done on every load, but now requires them to be passed as props
@@ -35,7 +36,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 
 	const dispatch = useDispatch();
 
-	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+	const themeStyle = getThemeStyle(useSelector((state: State) => state.graph.darkMode));
 
 	// Check for admin status
 	const currentUser = useSelector((state: State) => state.currentUser.profile);
@@ -321,7 +322,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 			</Button>
 
 			<Modal show={showModal} onHide={handleClose}>
-				<Modal.Header className={`${isDarkMode ? 'dark' : 'light'}`}>
+				<Modal.Header style={themeStyle}>
 					<Modal.Title> <FormattedMessage id="meter.create" />
 						<TooltipHelpContainer page='meters-create' />
 						<div style={tooltipStyle}>
@@ -331,7 +332,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 				</Modal.Header>
 				{/* when any of the Meter values are changed call one of the functions. */}
 				{loggedInAsAdmin && // only render when logged in as Admin
-					<Modal.Body className={`show-grid ${isDarkMode ? 'dark' : ''}`}>
+					<Modal.Body style={themeStyle}>
 						<div id="container">
 							<div id="modalChild">
 								{/* Modal content */}
@@ -341,6 +342,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="meter.identifier" /></label>
 											<Input
+												style={themeStyle}
 												name="identifier"
 												type="text"
 												onChange={e => handleStringChange(e)}
@@ -350,6 +352,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label>{translate('meter.name')} <label style={requiredStyle}>*</label></label>
 											<Input
+												style={themeStyle}
 												name='name'
 												type='text'
 												onChange={e => handleStringChange(e)}
@@ -359,6 +362,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label> {translate('meter.unitName')} <label style={requiredStyle}>*</label></label>
 											<Input
+												style={themeStyle}
 												name="unitId"
 												type='select'
 												value={state.unitId}
@@ -382,6 +386,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label>{translate('meter.defaultGraphicUnit')} <label style={requiredStyle}>*</label></label>
 											<Input
+												style={themeStyle}
 												name='defaultGraphicUnit'
 												type='select'
 												value={state.defaultGraphicUnit}
@@ -405,6 +410,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="meter.enabled" /></label>
 											<Input
+												style={themeStyle}
 												name='enabled'
 												type='select'
 												value={state.enabled.toString()}
@@ -418,6 +424,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="meter.displayable" /></label>
 											<Input
+												style={themeStyle}
 												name='displayable'
 												type='select'
 												value={state.displayable.toString()}
@@ -431,6 +438,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label>{translate('meter.type')} <label style={requiredStyle}>*</label></label>
 											<Input
+												style={themeStyle}
 												name='meterType'
 												type='select'
 												value={state.meterType}
@@ -453,6 +461,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="meter.url" /></label>
 											<Input
+												style={themeStyle}
 												name='url'
 												type='text'
 												onChange={e => handleStringChange(e)}
@@ -462,6 +471,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="meter.area" /></label>
 											<Input
+												style={themeStyle}
 												name="area"
 												type="number"
 												min="0"
@@ -472,6 +482,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="meter.gps" /></label>
 											<Input
+												style={themeStyle}
 												name='gps'
 												type='text'
 												onChange={e => handleStringChange(e)}
@@ -481,6 +492,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="meter.note" /></label>
 											<Input
+												style={themeStyle}
 												name='note'
 												type='textarea'
 												onChange={e => handleStringChange(e)}
@@ -491,6 +503,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="meter.cumulative" /></label>
 											<Input
+												style={themeStyle}
 												name='cumulative'
 												type='select'
 												value={state.cumulative.toString()}
@@ -504,6 +517,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="meter.cumulativeReset" /></label>
 											<Input
+												style={themeStyle}
 												name='cumulativeReset'
 												type='select'
 												value={state.cumulativeReset.toString()}
@@ -517,6 +531,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="meter.cumulativeResetStart" /></label>
 											<Input
+												style={themeStyle}
 												name='cumulativeResetStart'
 												type='text'
 												onChange={e => handleStringChange(e)}
@@ -527,6 +542,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="meter.cumulativeResetEnd" /></label>
 											<Input
+												style={themeStyle}
 												name='cumulativeResetEnd'
 												type='text'
 												onChange={e => handleStringChange(e)}
@@ -537,6 +553,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="meter.endOnlyTime" /></label>
 											<Input
+												style={themeStyle}
 												name='endOnlyTime'
 												type='select'
 												value={state.endOnlyTime.toString()}
@@ -550,6 +567,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="meter.readingGap" /></label>
 											<Input
+												style={themeStyle}
 												name='readingGap'
 												type='number'
 												onChange={e => handleNumberChange(e)}
@@ -560,6 +578,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="meter.readingVariation" /></label>
 											<Input
+												style={themeStyle}
 												name="readingVariation"
 												type="number"
 												onChange={e => handleNumberChange(e)}
@@ -570,6 +589,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label>{translate('meter.readingDuplication')} <label style={requiredStyle}>*</label></label>
 											<Input
+												style={themeStyle}
 												name="readingDuplication"
 												type="number"
 												onChange={e => handleNumberChange(e)}
@@ -582,6 +602,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="meter.timeSort" /></label>
 											<Input
+												style={themeStyle}
 												name='timeSort'
 												type='select'
 												value={state.timeSort}
@@ -602,6 +623,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="meter.reading" /></label>
 											<Input
+												style={themeStyle}
 												name="reading"
 												type="number"
 												onChange={e => handleNumberChange(e)}
@@ -611,6 +633,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="meter.startTimeStamp" /></label>
 											<Input
+												style={themeStyle}
 												name='startTimestamp'
 												type='text'
 												onChange={e => handleStringChange(e)}
@@ -621,6 +644,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="meter.endTimeStamp" /></label>
 											<Input
+												style={themeStyle}
 												name='endTimestamp'
 												type='text'
 												onChange={e => handleStringChange(e)}
@@ -631,6 +655,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="meter.previousEnd" /></label>
 											<Input
+												style={themeStyle}
 												name='previousEnd'
 												type='text'
 												onChange={e => handleStringChange(e)}
@@ -642,7 +667,7 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 							</div>
 						</div>
 					</Modal.Body>}
-				<Modal.Footer className={`${isDarkMode ? 'dark' : 'light'}`}>
+				<Modal.Footer style={themeStyle}>
 					{/* Hides the modal */}
 					<Button variant="secondary" onClick={handleClose}>
 						<FormattedMessage id="discard.changes" />
