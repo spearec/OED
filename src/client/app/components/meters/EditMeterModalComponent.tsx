@@ -23,6 +23,7 @@ import { isRoleAdmin } from '../../utils/hasPermissions';
 import { UnitData } from '../../types/redux/units';
 import { unitsCompatibleWithUnit } from '../../utils/determineCompatibleUnits';
 import { ConversionArray } from '../../types/conversionArray';
+import { AreaUnitType } from '../../utils/getAreaUnitConversion';
 import { notifyUser, getGPSString, nullToEmptyString, noUnitTranslated } from '../../utils/input';
 import { formInputStyle, tableStyle, requiredStyle, tooltipBaseStyle } from '../../styles/modalStyle';
 
@@ -39,6 +40,9 @@ export default function EditMeterModalComponent(props: EditMeterModalComponentPr
 	const dispatch = useDispatch();
 
 	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+
+	// The current meter's state of meter being edited. It should always be valid.
+	const meterState = useSelector((state: State) => state.meters.byMeterID[props.meter.id]);
 
 	// Check for admin status
 	const currentUser = useSelector((state: State) => state.currentUser.profile);
@@ -71,7 +75,9 @@ export default function EditMeterModalComponent(props: EditMeterModalComponentPr
 		endTimestamp: props.meter.endTimestamp,
 		previousEnd: props.meter.previousEnd,
 		unitId: props.meter.unitId,
-		defaultGraphicUnit: props.meter.defaultGraphicUnit
+		defaultGraphicUnit: props.meter.defaultGraphicUnit,
+		areaUnit: props.meter.areaUnit,
+		readingFrequency: props.meter.readingFrequency
 	}
 
 	const dropdownsStateDefaults = {
@@ -159,7 +165,9 @@ export default function EditMeterModalComponent(props: EditMeterModalComponentPr
 				props.meter.timeSort != state.timeSort ||
 				props.meter.startTimestamp != state.startTimestamp ||
 				props.meter.endTimestamp != state.endTimestamp ||
-				props.meter.previousEnd != state.previousEnd
+				props.meter.previousEnd != state.previousEnd ||
+				props.meter.areaUnit != state.areaUnit ||
+				props.meter.readingFrequency != state.readingFrequency
 			);
 
 		// Only validate and store if any changes.
@@ -170,12 +178,13 @@ export default function EditMeterModalComponent(props: EditMeterModalComponentPr
 			// Set default identifier as name if left blank
 			state.identifier = (!state.identifier || state.identifier.length === 0) ? state.name : state.identifier;
 
-			// Check area is positive.
-			// TODO For now allow zero so works with default value and DB. We should probably
-			// make this better default than 0 (DB set to not null now).
-			// if (state.area <= 0) {
+			// Check if area is non-negative
 			if (state.area < 0) {
 				notifyUser(translate('area.invalid') + state.area + '.');
+				inputOk = false;
+			} else if (state.area > 0 && state.areaUnit === AreaUnitType.none) {
+				// If the meter has an assigned area, it must have a unit
+				notifyUser(translate('area.but.no.unit'));
 				inputOk = false;
 			}
 
@@ -256,24 +265,21 @@ export default function EditMeterModalComponent(props: EditMeterModalComponentPr
 			const unitsCompatibleWithSelectedUnit = unitsCompatibleWithUnit(state.unitId);
 			dropdownsState.possibleGraphicUnits.forEach(unit => {
 				// If current graphic unit exists in the set of compatible graphic units OR if the current graphic unit is 'no unit'
-				if (unitsCompatibleWithSelectedUnit.has(unit.id) || unit.id == -99) {
+				if (unitsCompatibleWithSelectedUnit.has(unit.id) || unit.id === -99) {
 					compatibleGraphicUnits.add(unit);
-				}
-				else {
+				} else {
 					incompatibleGraphicUnits.add(unit);
 				}
 			});
-		}
-		// No unit is selected
-		else {
+		} else {
+			// No unit is selected
 			// OED does not allow a default graphic unit if there is no unit so it must be -99.
 			state.defaultGraphicUnit = -99;
 			dropdownsState.possibleGraphicUnits.forEach(unit => {
 				// Only -99 is allowed.
-				if (unit.id == -99) {
+				if (unit.id === -99) {
 					compatibleGraphicUnits.add(unit);
-				}
-				else {
+				} else {
 					incompatibleGraphicUnits.add(unit);
 				}
 			});
@@ -284,25 +290,23 @@ export default function EditMeterModalComponent(props: EditMeterModalComponentPr
 		// Units incompatible with currently selected graphic unit
 		const incompatibleUnits = new Set<UnitData>();
 		// If a default graphic unit is not 'no unit'
-		if (state.defaultGraphicUnit != -99) {
+		if (state.defaultGraphicUnit !== -99) {
 			// Find all units compatible with the selected graphic unit
 			dropdownsState.possibleMeterUnits.forEach(unit => {
 				// Graphic units compatible with the current meter unit
 				const compatibleGraphicUnits = unitsCompatibleWithUnit(unit.id);
 				// If the currently selected default graphic unit exists in the set of graphic units compatible with the current meter unit
 				// Also add the 'no unit' unit
-				if (compatibleGraphicUnits.has(state.defaultGraphicUnit) || unit.id == -99) {
+				if (compatibleGraphicUnits.has(state.defaultGraphicUnit) || unit.id === -99) {
 					// add the current meter unit to the list of compatible units
-					compatibleUnits.add(noUnitTranslated());
-				}
-				else {
+					compatibleUnits.add(unit.id === -99 ? noUnitTranslated() : unit);
+				} else {
 					// add the current meter unit to the list of incompatible units
 					incompatibleUnits.add(unit);
 				}
 			});
-		}
-		// No default graphic unit is selected
-		else {
+		} else {
+			// No default graphic unit is selected
 			// All units are compatible
 			compatibleUnits = new Set(dropdownsState.possibleMeterUnits);
 		}
@@ -318,6 +322,19 @@ export default function EditMeterModalComponent(props: EditMeterModalComponentPr
 		// If either unit or the status of pik changes then this needs to be done.
 		// pik is needed since the compatible units is not correct until pik is available.
 	}, [state.unitId, state.defaultGraphicUnit, ConversionArray.pikAvailable()]);
+
+	// If you edit and return to this page then want to see the DB result formatted for users
+	// for the readingFrequency. Since the update on save is to the global state, need to
+	// change the state used for display here. Note if you change readingFrequency but it
+	// is only a change in format and not value then this will not update because Redux is
+	// smart and sees they are the same. This is not really an issue to worry about but
+	// noted for others.
+	useEffect(() => {
+		setState({
+			...state,
+			readingFrequency: meterState.readingFrequency
+		})
+	}, [meterState.readingFrequency]);
 
 	const tooltipStyle = {
 		...tooltipBaseStyle,
@@ -440,6 +457,15 @@ export default function EditMeterModalComponent(props: EditMeterModalComponentPr
 												})}
 											</Input>
 										</div>
+										{/* Meter reading frequency */}
+										<div style={formInputStyle}>
+											<label><FormattedMessage id="meter.readingFrequency" /><label style={requiredStyle}>*</label></label>
+											<Input
+												name='readingFrequency'
+												type='text'
+												onChange={e => handleStringChange(e)}
+												value={state.readingFrequency} />
+										</div>
 										{/* URL input */}
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="meter.url" /></label>
@@ -456,8 +482,21 @@ export default function EditMeterModalComponent(props: EditMeterModalComponentPr
 												name="area"
 												type="number"
 												min="0"
-												defaultValue={nullToEmptyString(state.area)}
+												defaultValue={state.area}
 												onChange={e => handleNumberChange(e)} />
+										</div>
+										{/* meter area unit input */}
+										<div style={formInputStyle}>
+											<label><FormattedMessage id="meter.area.unit" /></label>
+											<Input
+												name='areaUnit'
+												type='select'
+												value={state.areaUnit}
+												onChange={e => handleStringChange(e)}>
+												{Object.keys(AreaUnitType).map(key => {
+													return (<option value={key} key={key}>{translate(`AreaUnitType.${key}`)}</option>)
+												})}
+											</Input>
 										</div>
 										{/* GPS input */}
 										<div style={formInputStyle}>
