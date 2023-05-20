@@ -12,7 +12,10 @@ import {
 	UpdateDefaultTimeZone,
 	UpdateDisplayTitleAction,
 	UpdateDefaultWarningFileSize,
-	UpdateDefaultFileSizeLimit
+	UpdateDefaultFileSizeLimit,
+	ToggleDefaultAreaNormalizationAction,
+	UpdateDefaultAreaUnitAction,
+	UpdateDefaultMeterReadingFrequencyAction
 } from '../../types/redux/admin';
 import { removeUnsavedChanges, updateUnsavedChanges } from '../../actions/unsavedWarning';
 import { defineMessages, FormattedMessage, injectIntl, WrappedComponentProps } from 'react-intl';
@@ -20,26 +23,33 @@ import { LanguageTypes } from '../../types/redux/i18n';
 import TimeZoneSelect from '../TimeZoneSelect';
 import store from '../../index';
 import { fetchPreferencesIfNeeded, submitPreferences } from '../../actions/admin';
+import { AreaUnitType } from '../../utils/getAreaUnitConversion';
 import { getThemeStyle } from '../../utils/darkMode';
 
 interface PreferencesProps {
 	displayTitle: string;
 	defaultChartToRender: ChartTypes;
 	defaultBarStacking: boolean;
+	defaultAreaNormalization: boolean;
 	defaultTimeZone: string;
 	defaultLanguage: LanguageTypes;
 	disableSubmitPreferences: boolean;
 	defaultWarningFileSize: number;
 	defaultFileSizeLimit: number;
+	defaultAreaUnit: AreaUnitType;
+	defaultMeterReadingFrequency: string;
 	isDarkMode: boolean;
 	updateDisplayTitle(title: string): UpdateDisplayTitleAction;
 	updateDefaultChartType(defaultChartToRender: ChartTypes): UpdateDefaultChartToRenderAction;
 	toggleDefaultBarStacking(): ToggleDefaultBarStackingAction;
+	toggleDefaultAreaNormalization(): ToggleDefaultAreaNormalizationAction;
 	updateDefaultLanguage(defaultLanguage: LanguageTypes): UpdateDefaultLanguageAction;
 	submitPreferences(): Promise<void>;
 	updateDefaultTimeZone(timeZone: string): UpdateDefaultTimeZone;
 	updateDefaultWarningFileSize(defaultWarningFileSize: number): UpdateDefaultWarningFileSize;
 	updateDefaultFileSizeLimit(defaultFileSizeLimit: number): UpdateDefaultFileSizeLimit;
+	updateDefaultAreaUnit(defaultAreaUnit: AreaUnitType): UpdateDefaultAreaUnitAction;
+	updateDefaultMeterReadingFrequency(defaultMeterReadingFrequency: string): UpdateDefaultMeterReadingFrequencyAction;
 }
 
 type PreferencesPropsWithIntl = PreferencesProps & WrappedComponentProps;
@@ -55,6 +65,9 @@ class PreferencesComponent extends React.Component<PreferencesPropsWithIntl> {
 		this.handleSubmitPreferences = this.handleSubmitPreferences.bind(this);
 		this.handleDefaultWarningFileSizeChange = this.handleDefaultWarningFileSizeChange.bind(this);
 		this.handleDefaultFileSizeLimitChange = this.handleDefaultFileSizeLimitChange.bind(this);
+		this.handleDefaultAreaNormalizationChange = this.handleDefaultAreaNormalizationChange.bind(this);
+		this.handleDefaultAreaUnitChange = this.handleDefaultAreaUnitChange.bind(this);
+		this.handleDefaultMeterReadingFrequencyChange = this.handleDefaultMeterReadingFrequencyChange.bind(this);
 	}
 
 	public render() {
@@ -73,6 +86,7 @@ class PreferencesComponent extends React.Component<PreferencesPropsWithIntl> {
 		};
 		const themeStyle = getThemeStyle(this.props.isDarkMode);
 		const messages = defineMessages({ name: { id: 'name' } });
+
 		return (
 			<div>
 				<div style={bottomPaddingStyle}>
@@ -145,10 +159,10 @@ class PreferencesComponent extends React.Component<PreferencesPropsWithIntl> {
 						</label>
 					</div>
 				</div>
+				<p style={labelStyle}>
+					<FormattedMessage id='default.graph.settings' />:
+				</p>
 				<div className='checkbox'>
-					<p style={labelStyle}>
-						<FormattedMessage id='default.bar.stacking' />:
-					</p>
 					<label>
 						<input
 							type='checkbox'
@@ -156,8 +170,50 @@ class PreferencesComponent extends React.Component<PreferencesPropsWithIntl> {
 							onChange={this.handleDefaultBarStackingChange}
 							checked={this.props.defaultBarStacking}
 						/>
-						<FormattedMessage id='bar.stacking' />
+						<FormattedMessage id='default.bar.stacking' />
 					</label>
+				</div>
+				<div className='checkbox'>
+					<label>
+						<input
+							type='checkbox'
+							style={{ marginRight: '10px' }}
+							onChange={this.handleDefaultAreaNormalizationChange}
+							checked={this.props.defaultAreaNormalization}
+						/>
+						<FormattedMessage id='default.area.normalize' />
+					</label>
+				</div>
+				<div>
+					<p style={labelStyle}>
+						<FormattedMessage id='default.area.unit' />:
+					</p>
+					<div className='radio'>
+						<label>
+							<input
+								type='radio'
+								name='areaUnitType'
+								style={{ marginRight: '10px' }}
+								value={AreaUnitType.feet}
+								onChange={this.handleDefaultAreaUnitChange}
+								checked={this.props.defaultAreaUnit === AreaUnitType.feet}
+							/>
+							<FormattedMessage id='AreaUnitType.feet' />
+						</label>
+					</div>
+					<div className='radio'>
+						<label>
+							<input
+								type='radio'
+								name='areaUnitType'
+								style={{ marginRight: '10px' }}
+								value={AreaUnitType.meters}
+								onChange={this.handleDefaultAreaUnitChange}
+								checked={this.props.defaultAreaUnit === AreaUnitType.meters}
+							/>
+							<FormattedMessage id='AreaUnitType.meters' />
+						</label>
+					</div>
 				</div>
 				<div>
 					<p style={labelStyle}>
@@ -233,6 +289,17 @@ class PreferencesComponent extends React.Component<PreferencesPropsWithIntl> {
 						maxLength={50}
 					/>
 				</div>
+				{/* Reuse same style as title. */}
+				<div style={bottomPaddingStyle}>
+					<p style={titleStyle}>
+						<FormattedMessage id='default.meter.reading.frequency' />:
+					</p>
+					<Input
+						type='text'
+						value={this.props.defaultMeterReadingFrequency}
+						onChange={this.handleDefaultMeterReadingFrequencyChange}
+					/>
+				</div>
 				<Button
 					type='submit'
 					onClick={this.handleSubmitPreferences}
@@ -279,6 +346,16 @@ class PreferencesComponent extends React.Component<PreferencesPropsWithIntl> {
 		this.updateUnsavedChanges();
 	}
 
+	private handleDefaultAreaNormalizationChange() {
+		this.props.toggleDefaultAreaNormalization();
+		this.updateUnsavedChanges();
+	}
+
+	private handleDefaultAreaUnitChange(e: { target: HTMLInputElement; }) {
+		this.props.updateDefaultAreaUnit(e.target.value as AreaUnitType);
+		this.updateUnsavedChanges();
+	}
+
 	private handleDefaultLanguageChange(e: React.FormEvent<HTMLInputElement>) {
 		this.props.updateDefaultLanguage((e.target as HTMLInputElement).value as LanguageTypes);
 		this.updateUnsavedChanges();
@@ -301,6 +378,11 @@ class PreferencesComponent extends React.Component<PreferencesPropsWithIntl> {
 
 	private handleDefaultFileSizeLimitChange(e: { target: HTMLInputElement; }) {
 		this.props.updateDefaultFileSizeLimit(parseFloat(e.target.value));
+		this.updateUnsavedChanges();
+	}
+
+	private handleDefaultMeterReadingFrequencyChange(e: { target: HTMLInputElement; }) {
+		this.props.updateDefaultMeterReadingFrequency(e.target.value);
 		this.updateUnsavedChanges();
 	}
 }

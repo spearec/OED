@@ -42,20 +42,3 @@ html {
 .dropdown-menu {
 	background-color: var(--bg-color);
 }
-
-.dropdown-item {
-	background-color: var(--bg-color);
-	color: var(--text-color);
-}
-
-/* .react-select-container {
-	background-color: var(--bg-color);
-	color: var(--text-color);
-	font-size: 30px;
-	border-color: green;
-} */
-
-.button {
-	background-color: var(--bg-color);
-	color: var(--text-color);
-}

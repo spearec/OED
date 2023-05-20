@@ -4,7 +4,6 @@
 
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import Dropdown from 'react-bootstrap/Dropdown';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import MenuModalComponent from './MenuModalComponent';
@@ -19,11 +18,19 @@ import { deleteToken } from '../utils/token';
 import { clearCurrentUser } from '../actions/currentUser';
 import { State } from '../types/redux/state';
 import { useDispatch, useSelector } from 'react-redux';
+import { Button } from 'reactstrap';
+import DarkModeComponent from './DarkModeComponent';
+import Dropdown from 'reactstrap/lib/Dropdown';
+import DropdownItem from 'reactstrap/lib/DropdownItem';
+import DropdownToggle from 'reactstrap/lib/DropdownToggle';
+import DropdownMenu from 'reactstrap/lib/DropdownMenu';
 import DarkModeComponent from './DarkModeComponent';
 import { getThemeStyle } from '../utils/darkMode';
 
 export default function HeaderButtonsComponent(args: { showCollapsedMenuButton: boolean, isModal: boolean }) {
 	const dispatch = useDispatch();
+
+	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
 
 	// Tracks modal or not so helps works as desired.
 	const dataFor = args.isModal ? 'all-modal' : 'all';
@@ -164,6 +171,8 @@ export default function HeaderButtonsComponent(args: { showCollapsedMenuButton: 
 		}
 	};
 
+	const [expand, setExpand] = useState(false);
+
 	return (
 		<div>
 			<div className="d-lg-none">
@@ -175,7 +184,7 @@ export default function HeaderButtonsComponent(args: { showCollapsedMenuButton: 
 				) : null}
 			</div>
 			<div className={args.showCollapsedMenuButton ? 'd-none d-lg-block' : ''}>
-				<Dropdown style={dropAlign} align='end'>
+				<Dropdown isOpen={expand} toggle={() => setExpand(!expand)}>
 					{/* There is an issue where the help popup goes off the page. When this
 					happens, you lose help text and you generally don't see the help text
 					if you click the help icon a second time. Why this is the case and how to
@@ -183,67 +192,84 @@ export default function HeaderButtonsComponent(args: { showCollapsedMenuButton: 
 					to shift the help icon to the left then there is enough space for the help
 					text box and this does not happen. The current possibilities for menuTitle
 					do this so the issue is not seen by the user. */}
-					<Dropdown.Toggle variant="outline-dark" style={state.themeStyle}>{state.menuTitle}</Dropdown.Toggle>
-					<Dropdown.Menu style={dropAlign} align='end'>
-						<Dropdown.Item
+					<DropdownToggle outline caret className={`${isDarkMode ? 'dark' : ''}`}>{state.menuTitle}</DropdownToggle>
+					<DropdownMenu className={`${isDarkMode ? 'dark' : ''}`}>
+						<DropdownItem
+							className={`${isDarkMode ? 'dark' : ''}`}
 							style={state.adminViewableLinkStyle}
 							disabled={state.shouldAdminButtonDisabled}
-							as={Link} to='/admin'>
+							tag={Link} 
+							to="/admin">
 							<FormattedMessage id='admin.panel' />
-						</Dropdown.Item>
-						<Dropdown.Item
+						</DropdownItem>
+						<DropdownItem
+							className={`${isDarkMode ? 'dark' : ''}`}
 							style={state.adminViewableLinkStyle}
 							disabled={state.shouldConversionsButtonDisabled}
-							as={Link} to='/conversions'>
+							tag={Link} 
+							to="/conversions">
 							<FormattedMessage id='conversions' />
-						</Dropdown.Item>
-						<Dropdown.Item
+						</DropdownItem>
+						<DropdownItem
+							className={`${isDarkMode ? 'dark' : ''}`}
 							style={state.csvViewableLinkStyle}
 							disabled={state.shouldCSVButtonDisabled}
-							as={Link} to='/csv'>
+							tag={Link} 
+							to="/csv">
 							<FormattedMessage id='csv' />
-						</Dropdown.Item>
-						<Dropdown.Item
+						</DropdownItem>
+						<DropdownItem
+							className={`${isDarkMode ? 'dark' : ''}`}
 							disabled={state.shouldGroupsButtonDisabled}
-							as={Link} to='/groups'>
+							tag={Link} 
+							to="/groups">
 							<FormattedMessage id='groups' />
-						</Dropdown.Item>
-						<Dropdown.Item
+						</DropdownItem>
+						<DropdownItem
+							className={`${isDarkMode ? 'dark' : ''}`}
 							disabled={state.shouldHomeButtonDisabled}
-							as={Link} to='/'>
+							tag={Link} 
+							to="/">
 							<FormattedMessage id='home' />
-						</Dropdown.Item>
-						<Dropdown.Item
+						</DropdownItem>
+						<DropdownItem
+							className={`${isDarkMode ? 'dark' : ''}`}
 							style={state.adminViewableLinkStyle}
 							disabled={state.shouldMapsButtonDisabled}
-							as={Link} to='/maps'>
+							tag={Link} 
+							to="/maps">
 							<FormattedMessage id='maps' />
-						</Dropdown.Item>
-						<Dropdown.Item
+						</DropdownItem>
+						<DropdownItem
+							className={`${isDarkMode ? 'dark' : ''}`}
 							disabled={state.shouldMetersButtonDisabled}
-							as={Link} to='meters'>
+							tag={Link} 
+							to="/meters">
 							<FormattedMessage id='meters' />
-						</Dropdown.Item>
-						<Dropdown.Item
+						</DropdownItem>
+						<DropdownItem
+							className={`${isDarkMode ? 'dark' : ''}`}
 							style={state.adminViewableLinkStyle}
 							disabled={state.shouldUnitsButtonDisabled}
-							as={Link} to='/units'>
+							tag={Link} 
+							to="/units">
 							<FormattedMessage id='units' />
-						</Dropdown.Item>
-						<DarkModeComponent />
-						<Dropdown.Divider />
-						<Dropdown.Item
-							style={state.loginLinkStyle}
-							as={Link} to='/login'>
-							<FormattedMessage id='log.in' />
-						</Dropdown.Item>
-						<Dropdown.Item
-							style={state.logoutLinkStyle}
-							onClick={handleLogOut}>
-							<FormattedMessage id='log.out' />
-						</Dropdown.Item>
-					</Dropdown.Menu>
+						</DropdownItem>
+					</DropdownMenu>
 				</Dropdown>
+				<DarkModeComponent />
+				<Link
+					style={state.loginLinkStyle}
+					to='/login'>
+					<Button outline className={`button ${isDarkMode ? 'dark' : ''}`}><FormattedMessage id='log.in' />
+					</Button>
+				</Link>
+				<Link
+					style={state.logoutLinkStyle}
+					to='/'>
+					<Button outline className={`button ${isDarkMode ? 'dark' : ''}`} onClick={handleLogOut}><FormattedMessage id='log.out' />
+					</Button>
+				</Link>
 				<TooltipHelpContainer page={dataFor} />
 				<TooltipMarkerComponent page={dataFor} helpTextId="help.home.header" />
 			</div>

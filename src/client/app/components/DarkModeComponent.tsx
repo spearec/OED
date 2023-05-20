@@ -11,6 +11,7 @@ import Toggle from 'react-toggle';
 import 'react-toggle/style.css';
 import '../styles/dark-mode.css'
 import { FormattedMessage } from 'react-intl';
+import { Button } from 'reactstrap';
 
 export default function DarkModeComponent() {
 	const dispatch = useDispatch();
@@ -38,12 +39,15 @@ export default function DarkModeComponent() {
 
 	return (
 		<>
+		<Button outline className={`button ${isDarkMode ? 'dark' : ''}`}>
 			<FormattedMessage id='dark.mode.toggle' />:
-			<Toggle
-				checked={isDarkMode}
-				onChange={switchDarkMode}
-				icons={false}
-			/>
+				<Toggle
+					checked={isDarkMode}
+					onChange={switchDarkMode}
+					icons={false}
+				/>
+		</Button>
+			
 		</>
 	)
 }

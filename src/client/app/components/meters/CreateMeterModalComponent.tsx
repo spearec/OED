@@ -21,9 +21,11 @@ import { isRoleAdmin } from '../../utils/hasPermissions';
 import { UnitData } from '../../types/redux/units';
 import { unitsCompatibleWithUnit } from '../../utils/determineCompatibleUnits';
 import { ConversionArray } from '../../types/conversionArray';
+import { AreaUnitType } from '../../utils/getAreaUnitConversion';
 import { notifyUser } from '../../utils/input'
 import { formInputStyle, tableStyle, requiredStyle, tooltipBaseStyle } from '../../styles/modalStyle';
 import { getThemeStyle } from '../../utils/darkMode';
+
 
 // TODO Moved the possible meters/graphic units calculations up to the details component
 // This was to prevent the calculations from being done on every load, but now requires them to be passed as props
@@ -41,6 +43,9 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 	// Check for admin status
 	const currentUser = useSelector((state: State) => state.currentUser.profile);
 	const loggedInAsAdmin = (currentUser !== null) && isRoleAdmin(currentUser.role);
+
+	// Admin state so can get the default reading frequency.
+	const adminState = useSelector((state: State) => state.admin)
 
 	const defaultValues = {
 		id: -99,
@@ -70,7 +75,9 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 		reading: 0.0,
 		startTimestamp: '',
 		endTimestamp: '',
-		previousEnd: ''
+		previousEnd: '',
+		areaUnit: AreaUnitType.none,
+		readingFrequency: adminState.defaultMeterReadingFrequency
 	}
 
 	const dropdownsStateDefaults = {
@@ -139,9 +146,13 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 		// Set default identifier as name if left blank
 		state.identifier = (!state.identifier || state.identifier.length === 0) ? state.name : state.identifier;
 
-		// Check area is positive.
+		// Check if area is non-negative
 		if (state.area < 0) {
 			notifyUser(translate('area.invalid') + state.area + '.');
+			inputOk = false;
+		} else if (state.area > 0 && state.areaUnit == AreaUnitType.none) {
+			// If the meter has an assigned area, it must have a unit
+			notifyUser(translate('area.but.no.unit'));
 			inputOk = false;
 		}
 
@@ -457,6 +468,15 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 												})}
 											</Input>
 										</div>
+										{/* Meter reading frequency */}
+										<div style={formInputStyle}>
+											<label><FormattedMessage id="meter.readingFrequency" /><label style={requiredStyle}>*</label></label>
+											<Input
+												name='readingFrequency'
+												type='text'
+												onChange={e => handleStringChange(e)}
+												value={state.readingFrequency} />
+										</div>
 										{/* URL input */}
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="meter.url" /></label>
@@ -477,6 +497,19 @@ export default function CreateMeterModalComponent(props: CreateMeterModalCompone
 												min="0"
 												defaultValue={state.area}
 												onChange={e => handleNumberChange(e)} />
+										</div>
+										{/* meter area unit input */}
+										<div style={formInputStyle}>
+											<label><FormattedMessage id="meter.area.unit" /></label>
+											<Input
+												name='areaUnit'
+												type='select'
+												value={state.areaUnit}
+												onChange={e => handleStringChange(e)}>
+												{Object.keys(AreaUnitType).map(key => {
+													return (<option value={key} key={key}>{translate(`AreaUnitType.${key}`)}</option>)
+												})}
+											</Input>
 										</div>
 										{/* GPS input */}
 										<div style={formInputStyle}>
