@@ -218,6 +218,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="unit.represent" /></label><br />
 											<Input
+												style={darkModeStyle}
 												name='unitRepresent'
 												type='select'
 												value={state.unitRepresent}
@@ -231,6 +232,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="unit.displayable" /></label><br />
 											<Input
+												style={darkModeStyle}
 												name='displayable'
 												type='select'
 												value={state.displayable}
@@ -244,6 +246,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="unit.preferred.display" /></label><br />
 											<Input
+												style={darkModeStyle}
 												name='preferredDisplay'
 												type='select'
 												value={state.preferredDisplay.toString()}
@@ -257,6 +260,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="unit.sec.in.rate" /></label><br />
 											<Input
+												style={darkModeStyle}
 												name='secInRate'
 												type="number"
 												value={state.secInRate}
@@ -270,6 +274,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="unit.suffix" /></label><br />
 											<Input
+												style={darkModeStyle}
 												name="suffix"
 												type="text"
 												value={state.suffix}
@@ -280,6 +285,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="unit.note" /></label><br />
 											<Input
+												style={darkModeStyle}
 												name="note"
 												type="textarea"
 												value={state.note}
@@ -292,7 +298,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 						</div>
 					</div>
 				</Modal.Body>
-				<Modal.Footer className={`${isDarkMode ? 'dark' : 'light'}`}>
+				<Modal.Footer className={`${isDarkMode ? 'dark' : ''}`}>
 					{/* Hides the modal */}
 					<Button variant="secondary" onClick={handleClose}>
 						<FormattedMessage id="discard.changes" />

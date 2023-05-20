@@ -50,11 +50,11 @@ export default class ChartLinkComponent extends React.Component<ChartLinkProps, 
 
 		};
 
-		const isDarkMode = this.props.isDarkMode;
+		const buttonTheme = this.props.isDarkMode ? 'light' : 'dark';
 
 		return (
 			<div>
-				<Button	outline	className={`button ${isDarkMode ? 'dark' : ''}`} onClick={this.toggleLink}>
+				<Button	outline	color={buttonTheme} onClick={this.toggleLink}>
 					<FormattedMessage id='toggle.link' />
 				</Button>
 				<TooltipMarkerComponent page='home' helpTextId='help.home.toggle.chart.link'/>
