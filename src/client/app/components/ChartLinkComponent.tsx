@@ -12,6 +12,7 @@ import TooltipMarkerComponent from './TooltipMarkerComponent';
 interface ChartLinkProps {
 	linkText: string;
 	chartType: ChartTypes;
+	isDarkMode: boolean;
 }
 
 interface ChartLinkState {

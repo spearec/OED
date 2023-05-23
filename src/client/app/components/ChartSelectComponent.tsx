@@ -27,7 +27,9 @@ export default function ChartSelectComponent() {
 		fontWeight: 'bold',
 		margin: 0
 	};
-	const themeClassName = useSelector((state: State) => state.graph.darkMode) ? 'dark' : '';
+
+	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+	const themeClassName = isDarkMode ? 'dark' : '';
 
 	const dispatch = useDispatch();
 	const [expand, setExpand] = useState(false);
@@ -41,30 +43,26 @@ export default function ChartSelectComponent() {
 				<FormattedMessage id='graph.type' />:
 			</p>
 			<Dropdown isOpen={expand} toggle={() => setExpand(!expand)}>
-				<DropdownToggle outline caret className={themeClassName}>
+				<DropdownToggle outline caret>
 					<FormattedMessage id={useSelector((state: State) => state.graph.chartToRender)} />
 				</DropdownToggle>
-				<DropdownMenu className={themeClassName}>
+				<DropdownMenu dark={true}>
 					<DropdownItem
-						className={themeClassName}
 						onClick={() => dispatch({type: 'CHANGE_CHART_TO_RENDER', chartType: ChartTypes.line})}
 					>
 						<FormattedMessage id='line' />
 					</DropdownItem>
 					<DropdownItem
-						className={themeClassName}
 						onClick={() => dispatch({type: 'CHANGE_CHART_TO_RENDER', chartType: ChartTypes.bar})}
 					>
 						<FormattedMessage id='bar' />
 					</DropdownItem>
 					<DropdownItem
-						className={themeClassName}
 						onClick={() => dispatch({type: 'CHANGE_CHART_TO_RENDER', chartType: ChartTypes.compare})}
 					>
 						<FormattedMessage id='compare' />
 					</DropdownItem>
 					<DropdownItem
-						className={themeClassName}
 						onClick={() => {
 							dispatch({type: 'CHANGE_CHART_TO_RENDER', chartType: ChartTypes.map});
 							if (Object.keys(sortedMaps).length === 1) {

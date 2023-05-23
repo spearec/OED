@@ -38,17 +38,16 @@ export default function DarkModeComponent() {
 	}, [theme]);
 
 	return (
-		<>
-		<Button outline className={`button ${isDarkMode ? 'dark' : ''}`}>
-			<FormattedMessage id='dark.mode.toggle' />:
+		<div>
+			<Button outline className={`button ${isDarkMode ? 'dark' : ''}`}>
+				<FormattedMessage id='dark.mode.toggle' />:
 				<Toggle
 					checked={isDarkMode}
 					onChange={switchDarkMode}
 					icons={false}
 				/>
-		</Button>
-			
-		</>
+			</Button>
+		</div>
 	)
 }
 

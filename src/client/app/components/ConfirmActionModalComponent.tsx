@@ -7,7 +7,6 @@ import '../styles/modal.css';
 import translate from '../utils/translate';
 import { State } from '../types/redux/state';
 import { useSelector } from 'react-redux';
-import { getThemeStyle } from '../utils/darkMode';
 
 interface ConfirmActionModalComponentProps {
 	// Control this through the parent component to open/close this modal

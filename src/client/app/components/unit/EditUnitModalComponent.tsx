@@ -156,7 +156,9 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 		...tooltipBaseStyle,
 		tooltipEditUnitView: 'help.admin.unitedit'
 	};
-	const themeStyle = getThemeStyle(useSelector((state: State) => state.graph.darkMode));
+
+	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+	const themeStyle = getThemeStyle(isDarkMode);
 
 	return (
 		<>
@@ -180,7 +182,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 									<div style={formInputStyle}>
 										<label><FormattedMessage id="unit.identifier" /></label><br />
 										<Input
-											style={themeStyle}
+											color="dark"
 											name="identifier"
 											type="text"
 											onChange={e => handleStringChange(e)}
@@ -191,7 +193,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 										<div style={formInputStyle}>
 											<label>{translate('unit.name')} <label style={requiredStyle}>*</label></label>
 											<Input
-												style={themeStyle}
+												color="light"
 												name='name'
 												type='text'
 												onChange={e => handleStringChange(e)}
@@ -215,7 +217,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="unit.represent" /></label><br />
 											<Input
-												style={darkModeStyle}
+												style={themeStyle}
 												name='unitRepresent'
 												type='select'
 												value={state.unitRepresent}
@@ -229,7 +231,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="unit.displayable" /></label><br />
 											<Input
-												style={darkModeStyle}
+												style={themeStyle}
 												name='displayable'
 												type='select'
 												value={state.displayable}
@@ -243,7 +245,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="unit.preferred.display" /></label><br />
 											<Input
-												style={darkModeStyle}
+												style={themeStyle}
 												name='preferredDisplay'
 												type='select'
 												value={state.preferredDisplay.toString()}
@@ -257,7 +259,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="unit.sec.in.rate" /></label><br />
 											<Input
-												style={darkModeStyle}
+												style={themeStyle}
 												name='secInRate'
 												type="number"
 												value={state.secInRate}
@@ -271,7 +273,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="unit.suffix" /></label><br />
 											<Input
-												style={darkModeStyle}
+												style={themeStyle}
 												name="suffix"
 												type="text"
 												value={state.suffix}
@@ -282,7 +284,7 @@ export default function EditUnitModalComponent(props: EditUnitModalComponentProp
 										<div style={formInputStyle}>
 											<label><FormattedMessage id="unit.note" /></label><br />
 											<Input
-												style={darkModeStyle}
+												style={themeStyle}
 												name="note"
 												type="textarea"
 												value={state.note}

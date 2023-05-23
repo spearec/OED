@@ -33,12 +33,3 @@ html {
 	width: 100%;
 	background-color: var(--bg-color);
 }
-
-.dropdown-toggle {
-	background-color: var(--bg-color);
-	color: var(--text-color);
-}
-
-.dropdown-menu {
-	background-color: var(--bg-color);
-}

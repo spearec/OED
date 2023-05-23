@@ -288,7 +288,6 @@ export default function ChartDataSelectComponent() {
 	const dispatch: Dispatch = useDispatch();
 
 	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
-	const themeClassName = isDarkMode ? 'dark' : '';
 	const themeStyle = getThemeStyle(isDarkMode);
 
 	return (

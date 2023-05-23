@@ -24,13 +24,10 @@ import Dropdown from 'reactstrap/lib/Dropdown';
 import DropdownItem from 'reactstrap/lib/DropdownItem';
 import DropdownToggle from 'reactstrap/lib/DropdownToggle';
 import DropdownMenu from 'reactstrap/lib/DropdownMenu';
-import DarkModeComponent from './DarkModeComponent';
 import { getThemeStyle } from '../utils/darkMode';
 
 export default function HeaderButtonsComponent(args: { showCollapsedMenuButton: boolean, isModal: boolean }) {
 	const dispatch = useDispatch();
-
-	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
 
 	// Tracks modal or not so helps works as desired.
 	const dataFor = args.isModal ? 'all-modal' : 'all';
@@ -78,6 +75,7 @@ export default function HeaderButtonsComponent(args: { showCollapsedMenuButton: 
 	const unsavedChangesState = useSelector((state: State) => state.unsavedWarning.hasUnsavedChanges);
 
 	const isDarkMode = useSelector((state: State) => state.graph.darkMode);
+	const dropdownTheme = isDarkMode ? 'light' : 'secondary';
 
 	// This updates which page is disabled because it is the one you are on.
 	useEffect(() => {
@@ -116,28 +114,23 @@ export default function HeaderButtonsComponent(args: { showCollapsedMenuButton: 
 			// The menu title has login.
 			currentMenuTitle = translate('page.choice.login');
 		}
-		const currentThemeStyle = getThemeStyle(isDarkMode);
 		// If you have a role then check if it is CSV.
 		const renderCSVButton = Boolean(role && hasPermissions(role, UserRole.CSV));
 		// If no role then not logged in so show link to log in.
 		const renderLoginButton = role === null;
 		// If an admin then show these items, otherwise hide them.
 		const currentAdminViewableLinkStyle = {
-			...currentThemeStyle,
 			display: loggedInAsAdmin ? 'block' : 'none'
 		};
 		// Similar but need to have CSV permissions.
 		const currentCsvViewableLinkStyle: React.CSSProperties = {
-			...currentThemeStyle,
 			display: renderCSVButton ? 'block' : 'none'
 		};
 		// Show login if not and logout if you are.
 		const currentLoginLinkStyle = {
-			...currentThemeStyle,
 			display: renderLoginButton ? 'block' : 'none'
 		};
 		const currentLogoutLinkStyle = {
-			...currentThemeStyle,
 			display: !renderLoginButton ? 'block' : 'none'
 		};
 		setState(prevState => ({
@@ -146,17 +139,9 @@ export default function HeaderButtonsComponent(args: { showCollapsedMenuButton: 
 			csvViewableLinkStyle: currentCsvViewableLinkStyle,
 			loginLinkStyle: currentLoginLinkStyle,
 			logoutLinkStyle: currentLogoutLinkStyle,
-			menuTitle: currentMenuTitle,
-			themeStyle: currentThemeStyle
+			menuTitle: currentMenuTitle
 		}));
 	}, [currentUser]);
-
-	// Style for dropdown
-	const dropAlign: React.CSSProperties = {
-		...state.themeStyle,
-		right: 0,
-		margin: 0
-	};
 
 	// Handle actions on logout.
 	const handleLogOut = () => {
@@ -192,66 +177,58 @@ export default function HeaderButtonsComponent(args: { showCollapsedMenuButton: 
 					to shift the help icon to the left then there is enough space for the help
 					text box and this does not happen. The current possibilities for menuTitle
 					do this so the issue is not seen by the user. */}
-					<DropdownToggle outline caret className={`${isDarkMode ? 'dark' : ''}`}>{state.menuTitle}</DropdownToggle>
-					<DropdownMenu className={`${isDarkMode ? 'dark' : ''}`}>
+					<DropdownToggle outline caret color={dropdownTheme}>{state.menuTitle}</DropdownToggle>
+					<DropdownMenu>
 						<DropdownItem
-							className={`${isDarkMode ? 'dark' : ''}`}
 							style={state.adminViewableLinkStyle}
 							disabled={state.shouldAdminButtonDisabled}
-							tag={Link} 
+							tag={Link}
 							to="/admin">
 							<FormattedMessage id='admin.panel' />
 						</DropdownItem>
 						<DropdownItem
-							className={`${isDarkMode ? 'dark' : ''}`}
 							style={state.adminViewableLinkStyle}
 							disabled={state.shouldConversionsButtonDisabled}
-							tag={Link} 
+							tag={Link}
 							to="/conversions">
 							<FormattedMessage id='conversions' />
 						</DropdownItem>
 						<DropdownItem
-							className={`${isDarkMode ? 'dark' : ''}`}
 							style={state.csvViewableLinkStyle}
 							disabled={state.shouldCSVButtonDisabled}
-							tag={Link} 
+							tag={Link}
 							to="/csv">
 							<FormattedMessage id='csv' />
 						</DropdownItem>
 						<DropdownItem
-							className={`${isDarkMode ? 'dark' : ''}`}
 							disabled={state.shouldGroupsButtonDisabled}
-							tag={Link} 
+							tag={Link}
 							to="/groups">
 							<FormattedMessage id='groups' />
 						</DropdownItem>
 						<DropdownItem
-							className={`${isDarkMode ? 'dark' : ''}`}
 							disabled={state.shouldHomeButtonDisabled}
-							tag={Link} 
+							tag={Link}
 							to="/">
 							<FormattedMessage id='home' />
 						</DropdownItem>
 						<DropdownItem
-							className={`${isDarkMode ? 'dark' : ''}`}
 							style={state.adminViewableLinkStyle}
 							disabled={state.shouldMapsButtonDisabled}
-							tag={Link} 
+							tag={Link}
 							to="/maps">
 							<FormattedMessage id='maps' />
 						</DropdownItem>
 						<DropdownItem
-							className={`${isDarkMode ? 'dark' : ''}`}
 							disabled={state.shouldMetersButtonDisabled}
-							tag={Link} 
+							tag={Link}
 							to="/meters">
 							<FormattedMessage id='meters' />
 						</DropdownItem>
 						<DropdownItem
-							className={`${isDarkMode ? 'dark' : ''}`}
 							style={state.adminViewableLinkStyle}
 							disabled={state.shouldUnitsButtonDisabled}
-							tag={Link} 
+							tag={Link}
 							to="/units">
 							<FormattedMessage id='units' />
 						</DropdownItem>
@@ -261,13 +238,15 @@ export default function HeaderButtonsComponent(args: { showCollapsedMenuButton: 
 				<Link
 					style={state.loginLinkStyle}
 					to='/login'>
-					<Button outline className={`button ${isDarkMode ? 'dark' : ''}`}><FormattedMessage id='log.in' />
+					<Button outline color={dropdownTheme}>
+						<FormattedMessage id='log.in' />
 					</Button>
 				</Link>
 				<Link
 					style={state.logoutLinkStyle}
 					to='/'>
-					<Button outline className={`button ${isDarkMode ? 'dark' : ''}`} onClick={handleLogOut}><FormattedMessage id='log.out' />
+					<Button outline color={dropdownTheme} onClick={handleLogOut}>
+						<FormattedMessage id='log.out' />
 					</Button>
 				</Link>
 				<TooltipHelpContainer page={dataFor} />
