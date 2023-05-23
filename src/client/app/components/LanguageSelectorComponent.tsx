@@ -8,11 +8,7 @@ import { LanguageTypes } from '../types/redux/i18n';
 import { UpdateDefaultLanguageAction } from '../types/redux/admin';
 import { FormattedMessage } from 'react-intl';
 import TooltipMarkerComponent from './TooltipMarkerComponent';
-import Dropdown from 'reactstrap/lib/Dropdown';
-import DropdownItem from 'reactstrap/lib/DropdownItem';
-import DropdownToggle from 'reactstrap/lib/DropdownToggle';
-import DropdownMenu from 'reactstrap/lib/DropdownMenu';
-import { getThemeStyle } from '../utils/darkMode';
+import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 
 interface LanguageSelectProps {
 	selectedLanguage: LanguageTypes;
@@ -56,42 +52,40 @@ export default class LanguageSelectorComponent extends React.Component<LanguageS
 			margin: 0
 		};
 
-		const themeStyle = getThemeStyle(this.props.isDarkMode);
+		const themeStyle = this.props.isDarkMode ? 'dark' : '';
 
 		return (
-			<div style={divBottomPadding}>
-				<p style={labelStyle}>
-					<FormattedMessage id='language' />:
-				</p>
-				<Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropdown}>
-					<DropdownToggle outline style={themeStyle} caret>
+			<div>
+				<Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropdown} direction='end'>
+					<DropdownToggle outline className={themeStyle} caret>
 						{/* Show the currently selected language as its name */}
-						{LanguageNames[this.props.selectedLanguage]}
+						{/* {LanguageNames[this.props.selectedLanguage]} */}
+						<FormattedMessage id='language' />
 					</DropdownToggle>
-					<DropdownMenu style={themeStyle}>
+					<DropdownMenu className={themeStyle} right>
 						<DropdownItem
-							style={themeStyle}
+							className={themeStyle}
 							onClick={() => this.handleChangeLanguage(LanguageTypes.en)}
 						>
 							English
 						</DropdownItem>
 						<DropdownItem
-							style={themeStyle}
+							className={themeStyle}
 							onClick={() => this.handleChangeLanguage(LanguageTypes.fr)}
 						>
 							Français
 						</DropdownItem>
 						<DropdownItem
-							style={themeStyle}
+							className={themeStyle}
 							onClick={() => this.handleChangeLanguage(LanguageTypes.es)}
 						>
 							Español
 						</DropdownItem>
+						<DropdownItem divider />
+						<TooltipMarkerComponent page='home' helpTextId='help.home.language' />
+						<DropdownItem className={themeStyle}><TooltipMarkerComponent page='home' helpTextId='help.home.language' /></DropdownItem>
 					</DropdownMenu>
 				</Dropdown>
-				<div>
-					<TooltipMarkerComponent page='home' helpTextId='help.home.language' />
-				</div>
 			</div>
 		);
 	}

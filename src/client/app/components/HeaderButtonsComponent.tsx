@@ -18,13 +18,9 @@ import { deleteToken } from '../utils/token';
 import { clearCurrentUser } from '../actions/currentUser';
 import { State } from '../types/redux/state';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button } from 'reactstrap';
+import { Button, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavLink, Navbar, NavbarBrand, UncontrolledDropdown } from 'reactstrap';
 import DarkModeComponent from './DarkModeComponent';
-import Dropdown from 'reactstrap/lib/Dropdown';
-import DropdownItem from 'reactstrap/lib/DropdownItem';
-import DropdownToggle from 'reactstrap/lib/DropdownToggle';
-import DropdownMenu from 'reactstrap/lib/DropdownMenu';
-import { getThemeStyle } from '../utils/darkMode';
+import LanguageSelectorContainer from '../containers/LanguageSelectorContainer';
 
 export default function HeaderButtonsComponent(args: { showCollapsedMenuButton: boolean, isModal: boolean }) {
 	const dispatch = useDispatch();
@@ -51,7 +47,6 @@ export default function HeaderButtonsComponent(args: { showCollapsedMenuButton: 
 		logoutLinkStyle: {
 			display: 'none'
 		} as React.CSSProperties,
-		themeStyle: getThemeStyle(false),
 		// The should ones tell if see but not selectable.
 		shouldHomeButtonDisabled: true,
 		shouldAdminButtonDisabled: true,
@@ -169,88 +164,149 @@ export default function HeaderButtonsComponent(args: { showCollapsedMenuButton: 
 				) : null}
 			</div>
 			<div className={args.showCollapsedMenuButton ? 'd-none d-lg-block' : ''}>
-				<Dropdown isOpen={expand} toggle={() => setExpand(!expand)}>
-					{/* There is an issue where the help popup goes off the page. When this
-					happens, you lose help text and you generally don't see the help text
-					if you click the help icon a second time. Why this is the case and how to
-					get the placement correct is unclear. However, if the menuTitle is long enough
-					to shift the help icon to the left then there is enough space for the help
-					text box and this does not happen. The current possibilities for menuTitle
-					do this so the issue is not seen by the user. */}
-					<DropdownToggle outline caret color={dropdownTheme}>{state.menuTitle}</DropdownToggle>
-					<DropdownMenu>
-						<DropdownItem
+				<Navbar expand>
+					{/* <NavbarBrand tag={Link} to="/">
+						<img src='./logo.png' />
+					</NavbarBrand> */}
+					<Nav navbar>
+						<NavLink
 							style={state.adminViewableLinkStyle}
 							disabled={state.shouldAdminButtonDisabled}
 							tag={Link}
 							to="/admin">
 							<FormattedMessage id='admin.panel' />
-						</DropdownItem>
-						<DropdownItem
+						</NavLink>
+						<NavLink
+							disabled={state.shouldHomeButtonDisabled}
+							tag={Link}
+							to="/">
+							<FormattedMessage id='home' />
+						</NavLink>
+
+						<UncontrolledDropdown nav inNavbar>
+							<DropdownToggle nav caret>
+								Data
+							</DropdownToggle>
+							<DropdownMenu right>
+								<DropdownItem
+									style={state.adminViewableLinkStyle}
+									disabled={state.shouldConversionsButtonDisabled}
+									tag={Link}
+									to="/conversions">
+									<FormattedMessage id='conversions' />
+								</DropdownItem>
+								<DropdownItem
+									style={state.csvViewableLinkStyle}
+									disabled={state.shouldCSVButtonDisabled}
+									tag={Link}
+									to="/csv">
+									<FormattedMessage id='csv' />
+								</DropdownItem>
+								<DropdownItem
+									disabled={state.shouldGroupsButtonDisabled}
+									tag={Link}
+									to="/groups">
+									<FormattedMessage id='groups' />
+								</DropdownItem>
+								<DropdownItem
+									style={state.adminViewableLinkStyle}
+									disabled={state.shouldMapsButtonDisabled}
+									tag={Link}
+									to="/maps">
+									<FormattedMessage id='maps' />
+								</DropdownItem>
+								<DropdownItem
+									disabled={state.shouldMetersButtonDisabled}
+									tag={Link}
+									to="/meters">
+									<FormattedMessage id='meters' />
+								</DropdownItem>
+								<DropdownItem
+									style={state.adminViewableLinkStyle}
+									disabled={state.shouldUnitsButtonDisabled}
+									tag={Link}
+									to="/units">
+									<FormattedMessage id='units' />
+								</DropdownItem>
+							</DropdownMenu>
+						</UncontrolledDropdown>
+						{/* <NavLink
 							style={state.adminViewableLinkStyle}
 							disabled={state.shouldConversionsButtonDisabled}
 							tag={Link}
 							to="/conversions">
 							<FormattedMessage id='conversions' />
-						</DropdownItem>
-						<DropdownItem
+						</NavLink> */}
+						{/* <NavLink
 							style={state.csvViewableLinkStyle}
 							disabled={state.shouldCSVButtonDisabled}
 							tag={Link}
 							to="/csv">
 							<FormattedMessage id='csv' />
-						</DropdownItem>
-						<DropdownItem
+						</NavLink> */}
+						{/* <NavLink
 							disabled={state.shouldGroupsButtonDisabled}
 							tag={Link}
 							to="/groups">
 							<FormattedMessage id='groups' />
-						</DropdownItem>
-						<DropdownItem
-							disabled={state.shouldHomeButtonDisabled}
-							tag={Link}
-							to="/">
-							<FormattedMessage id='home' />
-						</DropdownItem>
-						<DropdownItem
+						</NavLink> */}
+						{/* <NavLink
 							style={state.adminViewableLinkStyle}
 							disabled={state.shouldMapsButtonDisabled}
 							tag={Link}
 							to="/maps">
 							<FormattedMessage id='maps' />
-						</DropdownItem>
-						<DropdownItem
+						</NavLink> */}
+						{/* <NavLink
 							disabled={state.shouldMetersButtonDisabled}
 							tag={Link}
 							to="/meters">
 							<FormattedMessage id='meters' />
-						</DropdownItem>
-						<DropdownItem
+						</NavLink>
+						<NavLink
 							style={state.adminViewableLinkStyle}
 							disabled={state.shouldUnitsButtonDisabled}
 							tag={Link}
 							to="/units">
 							<FormattedMessage id='units' />
-						</DropdownItem>
-					</DropdownMenu>
-				</Dropdown>
-				<DarkModeComponent />
-				<Link
-					style={state.loginLinkStyle}
-					to='/login'>
-					<Button outline color={dropdownTheme}>
-						<FormattedMessage id='log.in' />
-					</Button>
-				</Link>
-				<Link
-					style={state.logoutLinkStyle}
-					to='/'>
-					<Button outline color={dropdownTheme} onClick={handleLogOut}>
-						<FormattedMessage id='log.out' />
-					</Button>
-				</Link>
-				<TooltipHelpContainer page={dataFor} />
-				<TooltipMarkerComponent page={dataFor} helpTextId="help.home.header" />
+						</NavLink> */}
+						<UncontrolledDropdown nav inNavbar>
+							<DropdownToggle nav caret>
+								Options
+							</DropdownToggle>
+							<DropdownMenu>
+								<UncontrolledDropdown direction='end'>
+									<DropdownToggle nav caret>
+										Options
+									</DropdownToggle>
+									<DropdownMenu>
+										<DropdownItem>Option 1</DropdownItem>
+										<DropdownItem>Option 2</DropdownItem>
+									</DropdownMenu>
+								</UncontrolledDropdown>
+								<LanguageSelectorContainer />
+								<DarkModeComponent />
+								<DropdownItem divider />
+								<DropdownItem>Help</DropdownItem>
+							</DropdownMenu>
+						</UncontrolledDropdown>
+						<TooltipHelpContainer page={dataFor} />
+						<TooltipMarkerComponent page={dataFor} helpTextId="help.home.header" />
+						<NavLink
+							style={state.loginLinkStyle}
+							tag={Link}
+							to='/login'>
+							<FormattedMessage id='log.in' />
+						</NavLink>
+						<NavLink
+							style={state.logoutLinkStyle}
+							tag={Link}
+							to='/'
+							onClick={handleLogOut}>
+							<FormattedMessage id='log.out' />
+						</NavLink>
+					</Nav>
+				</Navbar>
 			</div>
 		</div>
 	);

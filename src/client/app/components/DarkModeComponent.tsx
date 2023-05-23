@@ -7,11 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { ToggleDarkMode } from '../actions/graph';
 import { State } from 'types/redux/state';
-import Toggle from 'react-toggle';
-import 'react-toggle/style.css';
 import '../styles/dark-mode.css'
-import { FormattedMessage } from 'react-intl';
-import { Button } from 'reactstrap';
+import { Button, DropdownItem } from 'reactstrap';
+import translate from '../utils/translate';
 
 export default function DarkModeComponent() {
 	const dispatch = useDispatch();
@@ -39,14 +37,9 @@ export default function DarkModeComponent() {
 
 	return (
 		<div>
-			<Button outline className={`button ${isDarkMode ? 'dark' : ''}`}>
-				<FormattedMessage id='dark.mode.toggle' />:
-				<Toggle
-					checked={isDarkMode}
-					onChange={switchDarkMode}
-					icons={false}
-				/>
-			</Button>
+			<DropdownItem onClick={switchDarkMode}>
+				{translate('dark.mode.toggle')}
+			</DropdownItem>
 		</div>
 	)
 }

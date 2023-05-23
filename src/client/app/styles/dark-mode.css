@@ -11,22 +11,4 @@
 	background-color: #ffffff;
 	color: #333333;
 }
-
-/* override base react-toggle colors */
-.react-toggle-track {
-	background-color: #4D4D4D;
-}
-
-.react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
-	background-color: #111111;
-}
-
-.react-toggle--checked .react-toggle-track {
-	background-color: #b2b2b2;
-}
-
-.react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
-	background-color: #eeeeee;
-}
-
   

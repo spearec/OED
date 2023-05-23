@@ -84,7 +84,7 @@ class PreferencesComponent extends React.Component<PreferencesPropsWithIntl> {
 			margin: 0,
 			paddingBottom: '5px'
 		};
-		const themeStyle = getThemeStyle(this.props.isDarkMode);
+		const themeStyle = this.props.isDarkMode ? 'dark' : '';
 		const messages = defineMessages({ name: { id: 'name' } });
 
 		return (
@@ -94,7 +94,7 @@ class PreferencesComponent extends React.Component<PreferencesPropsWithIntl> {
 						<FormattedMessage id='default.site.title' />:
 					</p>
 					<Input
-						style={themeStyle}
+						className={themeStyle}
 						type='text'
 						placeholder={this.props.intl.formatMessage(messages.name)}
 						value={this.props.displayTitle}
@@ -270,7 +270,7 @@ class PreferencesComponent extends React.Component<PreferencesPropsWithIntl> {
 						<FormattedMessage id='default.warning.file.size' />:
 					</p>
 					<Input
-						style={themeStyle}
+						className={themeStyle}
 						type='number'
 						value={this.props.defaultWarningFileSize}
 						onChange={this.handleDefaultWarningFileSizeChange}
@@ -282,7 +282,7 @@ class PreferencesComponent extends React.Component<PreferencesPropsWithIntl> {
 						<FormattedMessage id='default.file.size.limit' />:
 					</p>
 					<Input
-						style={themeStyle}
+						className={themeStyle}
 						type='number'
 						value={this.props.defaultFileSizeLimit}
 						onChange={this.handleDefaultFileSizeLimitChange}
@@ -295,6 +295,7 @@ class PreferencesComponent extends React.Component<PreferencesPropsWithIntl> {
 						<FormattedMessage id='default.meter.reading.frequency' />:
 					</p>
 					<Input
+						className={themeStyle}
 						type='text'
 						value={this.props.defaultMeterReadingFrequency}
 						onChange={this.handleDefaultMeterReadingFrequencyChange}

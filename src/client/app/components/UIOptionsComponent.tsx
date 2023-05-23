@@ -262,9 +262,9 @@ class UIOptionsComponent extends React.Component<UIOptionsPropsWithIntl, UIOptio
 				</div>
 
 				{/* Language selector dropdown */}
-				<div style={divTopPadding}>
+				{/* <div style={divTopPadding}>
 					<LanguageSelectorContainer />
-				</div>
+				</div> */}
 
 				<div style={divTopPadding} className='d-none d-lg-block'>
 					<Button
